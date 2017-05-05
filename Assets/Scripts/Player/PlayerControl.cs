@@ -7,6 +7,10 @@ public class PlayerControl : MonoBehaviour {
 
     float InputX;
     float InputY;
+
+    public float forwardAngleTranslate = 10;
+   // public
+
     public float speed;
     Vector3 translate;
 
