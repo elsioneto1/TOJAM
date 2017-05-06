@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dice_6 : Dice {
+public class Dice_6 : Dice_Base
+{
 
 
     

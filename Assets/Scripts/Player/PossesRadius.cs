@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PossesRadius : MonoBehaviour {
 
-    public List<Dice> dicesOnRadius = new List<Dice>();
-    public List<Dice> diceOnRandiusAndInFrontOfCharacter = new List<Dice>();
+    public List<Dice_Base> dicesOnRadius = new List<Dice_Base>();
+    public List<Dice_Base> diceOnRandiusAndInFrontOfCharacter = new List<Dice_Base>();
 
     float possessionCooldown = 0.2f;
     float _elapsedPossessionCooldown;
@@ -38,7 +38,7 @@ public class PossesRadius : MonoBehaviour {
         // our possessable die
         if (diceOnRandiusAndInFrontOfCharacter.Count > 0)
         {
-            Dice possessable = diceOnRandiusAndInFrontOfCharacter[0];
+            Dice_Base possessable = diceOnRandiusAndInFrontOfCharacter[0];
             for (int i = 0; i < diceOnRandiusAndInFrontOfCharacter.Count; i++)
             {
                 if (Vector3.Distance(diceOnRandiusAndInFrontOfCharacter[i].transform.position, transform.position)
@@ -64,7 +64,7 @@ public class PossesRadius : MonoBehaviour {
     public void OnTriggerEnter(Collider other)
     {
         Debug.Log("aa");
-        Dice d = other.gameObject.GetComponent<Dice>();
+        Dice_Base d = other.gameObject.GetComponent<Dice_Base>();
 
         if ( d != null)
         {
@@ -77,7 +77,7 @@ public class PossesRadius : MonoBehaviour {
     public void OnTriggerExit(Collider other)
     {
 
-        Dice d = other.gameObject.GetComponent<Dice>();
+        Dice_Base d = other.gameObject.GetComponent<Dice_Base>();
 
 
         if (d != null)
