@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class Dice_6 : Dice_Base
+public class Dice_6 : Dice
 {
 
 
@@ -13,18 +14,34 @@ public class Dice_6 : Dice_Base
 
     Vector3[] vectors = new Vector3[6];
     Vector3[] parsedVectors = new Vector3[4];
-
+   
     bool forceApplied = false;
     float possetionDuration = 0;
    
     Vector3 input = Vector3.zero;
-    // Use this for initialization
-    void Start () {
-        rBody = GetComponent<Rigidbody>();
+    [Header("Dice Inputs")]
+    public DiceResult Face1;
+    public DiceResult Face2;
+    public DiceResult Face3;
+    public DiceResult Face4;
+    public DiceResult Face5;
+    public DiceResult Face6;
 
-        // debugging <3 
-       // OnStartPossesion();
-	}
+
+    // Use this for initialization
+    public override void Start () {
+
+        base.Start();
+        rBody = GetComponent<Rigidbody>();
+        results.Add("right", Face1);
+        results.Add("right180", Face2);
+        results.Add("up", Face3);
+        results.Add("up180", Face4);
+        results.Add("forward", Face5);
+        results.Add("forward180", Face6);
+        
+        
+    }
 
 
     float elapsedTime;
@@ -111,11 +128,52 @@ public class Dice_6 : Dice_Base
 
     public override void OnEndPossesion()
     {
-        POSSESSED = false;
-        Vector3 newPlayerPosition = transform.position;
-        newPlayerPosition.y = whosPossessed.transform.position.y;
-        whosPossessed.transform.position = newPlayerPosition;
-        whosPossessed.PossessionExit();
+        base.OnEndPossesion();
+    }
+
+    public override DiceResult EvaluateResults()
+    {
+        base.EvaluateResults();
+        DiceResult dr = DiceResult.Sword;
+
+        float bestDot = Vector3.Dot(Vector3.up,-Vector3.up);
+
+        string dicKey = "";
+        if (Vector3.Dot(transform.right, Vector3.up) > bestDot)
+        {
+            dicKey = "right";
+            bestDot = Vector3.Dot(transform.right, Vector3.up);
+        }
+        if (Vector3.Dot(-transform.right, Vector3.up) > bestDot)
+        {
+            dicKey = "right180";
+            bestDot = Vector3.Dot(-transform.right, Vector3.up);
+        }
+        if (Vector3.Dot(transform.up, Vector3.up) > bestDot)
+        {
+            dicKey = "up";
+            bestDot = Vector3.Dot(transform.up, Vector3.up);
+        }
+        if (Vector3.Dot(-transform.up, Vector3.up) > bestDot)
+        {
+            dicKey = "up180";
+            bestDot = Vector3.Dot(-transform.up, Vector3.up);
+        }
+        if (Vector3.Dot(transform.forward, Vector3.up) > bestDot)
+        {
+            dicKey = "forward";
+            bestDot = Vector3.Dot(transform.forward, Vector3.up);
+        }
+        if (Vector3.Dot(-transform.forward, Vector3.up) > bestDot)
+        {
+            dicKey = "forward180";
+            bestDot = Vector3.Dot(-transform.forward, Vector3.up);
+        }
+
+        dr = results[dicKey];
+        Debug.Log(dicKey);
+        return dr;
+
     }
 
     public void FixedUpdate()
@@ -133,6 +191,15 @@ public class Dice_6 : Dice_Base
         Debug.DrawRay(transform.position, forceForward, Color.blue);
         Debug.DrawRay(transform.position, input * 3, Color.red);
         Debug.DrawRay(transform.position, finalForceVector, Color.green);
+        GUIStyle style = new GUIStyle();
+        style.border = new RectOffset(0, 10, 0, 10);
+        Handles.Label(transform.position + transform.right, Face1.ToString(), style);
+        Handles.Label(transform.position - transform.right * 1.5f, Face2.ToString(), style);
+        Handles.Label(transform.position + transform.up , Face3.ToString(), style);
+        Handles.Label(transform.position - transform.up , Face4.ToString(), style);
+        Handles.Label(transform.position + transform.forward * 1.5f, Face5.ToString(), style);
+        Handles.Label(transform.position - transform.forward , Face6.ToString(), style);
+
 
     }
 

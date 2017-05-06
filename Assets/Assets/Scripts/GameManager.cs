@@ -9,14 +9,17 @@ public class GameManager : MonoBehaviour {
     public List<GameObject> baseObjects = new List<GameObject>();
 
     public static GameManager instance;
+    
 
     void Awake()
     {
         instance = this;
     }
 
-    public static GameObject getBaseObject(string objectName)
+    public static GameObject GetBaseObject(string objectName)
     {
+
+        // DEUS OTIMIZACAO TA VENDO ISSO AE
         foreach (GameObject go in instance.baseObjects)
         {
             if ( go.name == objectName )
@@ -34,6 +37,7 @@ public class GameManager : MonoBehaviour {
         switch (nextState)
         {
             case EnumHolder.GameState.Handing:
+                Board.instance.Clear();
                 break;
 
             case EnumHolder.GameState.Initiating:
@@ -44,7 +48,8 @@ public class GameManager : MonoBehaviour {
 
             case EnumHolder.GameState.DamageBoss:
                 //Check Number of Hits on Dice
-                getBaseObject( "Boss" ).GetComponent<Boss>().DealDamage( 10 );
+                Board.instance.EvaluateResults();
+                GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage( 10 );
                 break;
 
             case EnumHolder.GameState.DamageHeroes:

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class Board : MonoBehaviour {
 
- 
+    public static Board instance;
+
     [Header("Hand")]
     #region Hand
 
@@ -43,6 +44,11 @@ public class Board : MonoBehaviour {
     #region round
     private int currentRound;
     #endregion
+
+
+    [HideInInspector]
+    public List<Dice> activeDices = new List<Dice>();
+
     void Start()
     {
         currentPlayerOrder.Add( EnumHolder.HeroType.Mage);
@@ -50,7 +56,7 @@ public class Board : MonoBehaviour {
         currentPlayerOrder.Add( EnumHolder.HeroType.Ranger);
 
         CreateRound();
-
+        instance = this;
     }
 
     void CreateRound()      
@@ -93,14 +99,17 @@ public class Board : MonoBehaviour {
     void CreateRoll()
     {
         GameManager.ChangeState( EnumHolder.GameState.Rolling );
-        List<EnumHolder.DiceType> tempDiceList = waveList[currentWave].diceList; 
+        List<EnumHolder.DiceType> tempDiceList = waveList[currentWave].diceList;
+        GameObject go;
         for (int i = 0; i < tempDiceList.Count; i++)
         {
             switch (tempDiceList[i])
             {
                 case EnumHolder.DiceType.D6:
                     //Criar o d6
-                    Instantiate(d6Prefab, transform.position, Quaternion.identity);
+                    go = (Instantiate(d6Prefab, transform.position, Quaternion.identity)) as GameObject;
+                    Debug.Log(Dice.SPAWN_BASE);
+                    go.transform.parent = Dice.SPAWN_BASE.transform;
                     break;
 
                 case EnumHolder.DiceType.D8:
@@ -155,6 +164,26 @@ public class Board : MonoBehaviour {
         }
     }
 
+
+    public void Clear()
+    {
+        for (int i = 0; i < activeDices.Count; i++)
+        {
+            activeDices[i].Clear();
+        }
+        activeDices.Clear();
+    }
+
+
+    public void EvaluateResults()
+    {
+
+        // pega aqui o resultado de cada dado. Ele retorna a face 
+        for (int i = 0; i < activeDices.Count; i++)
+        {
+            activeDices[i].EvaluateResults();
+        }
+    }
 
 }
 
