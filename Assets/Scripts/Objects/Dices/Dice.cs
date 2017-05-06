@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class Dice : MonoBehaviour {
 
-    string diceType = "D4";
+    protected float possesingTime = 0.2f;
+    protected bool POSSESSED = false;
+    public float appliedForce = 10;
+    protected Vector3 forceRight;
+    protected Vector3 forceForward;
+    protected Vector3 finalForceVector;
 
-	// Use this for initialization
-	void Start () {
+    [HideInInspector]
+    public PossesRadius whosPossessed;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -15,11 +23,17 @@ public class Dice : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public virtual void OnStartPossesion(PossesRadius player)
+    {
+        whosPossessed = player;
+    }
+
+    public virtual void OnEndPossesion()
+    {
+
+    }
+
+
 }
 
-[System.Serializable]
-public class WaveInfomation
-{
-
-    public string diceType; 
-}

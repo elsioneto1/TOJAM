@@ -5,23 +5,24 @@ using UnityEngine;
 public class Dice_6 : Dice {
 
 
-    public Vector3 forceRight;
-    public Vector3 forceForward;
-    public Vector3 finalForceVector;
+    
     Rigidbody rBody;
     float forceX = 10;
     float forceY = 10;
 
-    public float appliedForce = 10;
     Vector3[] vectors = new Vector3[6];
     Vector3[] parsedVectors = new Vector3[4];
 
     bool forceApplied = false;
-    bool POSSESSED = true;
+    float possetionDuration = 0;
+   
     Vector3 input = Vector3.zero;
     // Use this for initialization
     void Start () {
         rBody = GetComponent<Rigidbody>();
+
+        // debugging <3 
+       // OnStartPossesion();
 	}
 
 
@@ -30,13 +31,19 @@ public class Dice_6 : Dice {
 	// Update is called once per frame
 	void Update ()
     {
+
+        possetionDuration -= Time.deltaTime;
+        if (possetionDuration < 0 && InputParser.GetUnpossession() && POSSESSED)
+        {
+            OnEndPossesion();
+        }
         if (POSSESSED)
         {
-
+           // Debug.Log(possetionDuration);
             input = new Vector3(InputParser.GetHorizontal(), 0, InputParser.GetVertical());
             elapsedTime += Time.deltaTime;
 
-            if (elapsedTime > .2f && input.magnitude > 0.3f)
+            if (elapsedTime > .1f && input.magnitude > 0.3f)
             {
                 elapsedTime = 0;
                 vectors[0] = transform.right;
@@ -61,15 +68,12 @@ public class Dice_6 : Dice {
                         chosen = i;
                         chosenVector = vectors[i];
                     }
-                    //  Debug.DrawRay(transform.position,vectors[i],Color.red);
 
 
                 }
-                Debug.Log(chosen);
-                Debug.DrawRay(transform.position, Vector3.right, Color.green);
-                Debug.DrawRay(transform.position, chosenVector, Color.red);
+                
                 float angle = Mathf.Atan2(chosenVector.z - Vector3.right.z, chosenVector.x - Vector3.right.x);
-                //  Debug.Log(angle);
+
 
                 parsedVectors[0] = forceRight * forceX;
                 parsedVectors[1] = MathOperations.RotateVectorY(chosenVector, (-90 * Mathf.PI) / 180) * forceY;
@@ -91,6 +95,26 @@ public class Dice_6 : Dice {
                 // force *= 0.5f;
             }
         }
+    }
+
+
+    
+
+
+    public override void OnStartPossesion(PossesRadius player)
+    {
+        base.OnStartPossesion(player);
+        possetionDuration = possesingTime;
+        POSSESSED = true;
+    }
+
+    public override void OnEndPossesion()
+    {
+        POSSESSED = false;
+        Vector3 newPlayerPosition = transform.position;
+        newPlayerPosition.y = whosPossessed.transform.position.y;
+        whosPossessed.transform.position = newPlayerPosition;
+        whosPossessed.PossessionExit();
     }
 
     public void FixedUpdate()

@@ -29,4 +29,30 @@ public class InputParser : MonoBehaviour
 
     }
 
+    public static bool GetPossession()
+    {
+        bool returnValue = false;
+
+        if (Input.GetAxis("Fire1") == 1)
+        {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+
+    public static bool GetUnpossession()
+    {
+        bool returnValue = false;
+
+        if (Input.GetAxis("Fire1") == 1)
+        {
+            returnValue = true;
+        }
+
+        return returnValue;
+    }
+
+
+
 }

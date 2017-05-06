@@ -81,8 +81,14 @@
     <Compile Include="Assets\Scripts\Inputs\InputParser.cs" />
     <Compile Include="Assets\Scripts\Objects\Dices\Dice.cs" />
     <Compile Include="Assets\Scripts\Objects\Dices\Dice_6.cs" />
+    <Compile Include="Assets\Scripts\Objects\Environment\IsTheBoard.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
+    <Compile Include="Assets\Scripts\Player\PossesRadius.cs" />
     <Compile Include="Assets\Scripts\Utilities\MathOperations.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Dice\-Read-Me-.txt" />
+    <None Include="Assets\Scripts\Shaders\LitSample.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
