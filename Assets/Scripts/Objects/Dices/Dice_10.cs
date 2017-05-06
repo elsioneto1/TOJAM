@@ -75,7 +75,9 @@ public class Dice_10 : Dice {
 
     }
     // Update is called once per frame
-    void Update () {
+    public override void Update()
+    {
+        base.Update();
         possetionDuration -= Time.deltaTime;
         if (possetionDuration < 0 && InputParser.GetUnpossession() && POSSESSED)
         {

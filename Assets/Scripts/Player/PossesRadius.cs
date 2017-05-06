@@ -12,8 +12,9 @@ public class PossesRadius : MonoBehaviour {
 
     PlayerControl pControl;
     MeshRenderer renderer;
-	// Use this for initialization
-	void Start () {
+    Vector3 input;
+    // Use this for initialization
+    void Start () {
         pControl = GetComponent<PlayerControl>();
         renderer = GetComponent<MeshRenderer>();
 	}
@@ -24,13 +25,20 @@ public class PossesRadius : MonoBehaviour {
         
         float inputX = InputParser.GetHorizontal();
         float inputY = InputParser.GetVertical();
-        Vector3 input = new Vector3(inputX,0,inputY);
+        if (Mathf.Abs(inputX + inputY) > 0.2f)
+        {
+            input = new Vector3(inputX, 0, inputY);
+            input.Normalize();
+        }
         diceOnRandiusAndInFrontOfCharacter.Clear();
         if (GameManager.currentGameState == EnumHolder.GameState.Rolling)
         {
+          //  Debug.Log(dicesOnRadius.Count);
             // select by the input and then by the distance
             for (int i = 0; i < dicesOnRadius.Count; i++)
             {
+
+
                 if (Vector3.Dot((dicesOnRadius[i].transform.position - transform.position).normalized, input.normalized) > 0.8f)
                 {
                     diceOnRandiusAndInFrontOfCharacter.Add(dicesOnRadius[i]);
@@ -52,17 +60,22 @@ public class PossesRadius : MonoBehaviour {
                 }
 
                 // if the input is given, possess the son of a gun
-                if (possessable != null && _elapsedPossessionCooldown < 0)
+                if (possessable.diceState != Dice.DiceState.possessed)
                 {
-                    if (InputParser.GetPossession())
+                    Debug.Log("aa");
+                    if (possessable != null && _elapsedPossessionCooldown < 0)
                     {
-                        possessable.OnStartPossesion(this);
-                        OnPossess();
+                        possessable.diceState = Dice.DiceState.selected;
+                        if (InputParser.GetPossession())
+                        {
+                            possessable.OnStartPossesion(this);
+                            OnPossess();
+                        }
                     }
                 }
             }
         }
-        else
+        else if (GameManager.currentGameState != EnumHolder.GameState.Initiating)
         {
             if (dicesOnRadius.Count > 0)
             {
@@ -79,9 +92,10 @@ public class PossesRadius : MonoBehaviour {
     {
 
         Dice d = other.gameObject.GetComponent<Dice>();
-
+        Debug.Log(d);
         if ( d != null)
         {
+            Debug.Log("a");
             dicesOnRadius.Add(d);
         }
 
