@@ -78,13 +78,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Assets\Scripts\Board.cs" />
-    <Compile Include="Assets\Assets\Scripts\Boss.cs" />
-    <Compile Include="Assets\Assets\Scripts\Debuger.cs" />
-    <Compile Include="Assets\Assets\Scripts\EnumHolder.cs" />
-    <Compile Include="Assets\Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Assets\Scripts\Hand.cs" />
-    <Compile Include="Assets\Assets\Scripts\Wave.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\Board.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\Boss.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\Debuger.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\EnumHolder.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\GameManager.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\Hand.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\Wave.cs" />
     <Compile Include="Assets\Scripts\Inputs\InputParser.cs" />
     <Compile Include="Assets\Scripts\Objects\Dices\Dice.cs" />
     <Compile Include="Assets\Scripts\Objects\Dices\Dice_6.cs" />
