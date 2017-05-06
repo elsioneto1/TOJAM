@@ -48,8 +48,8 @@ public class GameManager : MonoBehaviour {
 
             case EnumHolder.GameState.DamageBoss:
                 //Check Number of Hits on Dice
-                Board.instance.EvaluateResults();
-                GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage( 10 );
+                int hits = Board.instance.EvaluateResults();
+                GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage(hits);
                 break;
 
             case EnumHolder.GameState.DamageHeroes:

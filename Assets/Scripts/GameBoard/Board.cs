@@ -83,7 +83,7 @@ public class Board : MonoBehaviour {
 
             yield return new WaitForSeconds( timeHanding );
             CreateRoll();
-            yield return new WaitForSeconds( timeInBetweenRolls );
+            yield return new WaitForSeconds( waveList[currentWave].waveTime);
             DamageBoss();
             yield return new WaitForSeconds( timeDamagingBoss );
         }
@@ -117,7 +117,7 @@ public class Board : MonoBehaviour {
                     Instantiate( d8Prefab, transform.position, Quaternion.identity);
                     break;
 
-                case EnumHolder.DiceType.D12:
+                case EnumHolder.DiceType.D10:
                     //criar o d12
                     Instantiate(d12Prefab, transform.position, Quaternion.identity);
                     break;
@@ -175,14 +175,17 @@ public class Board : MonoBehaviour {
     }
 
 
-    public void EvaluateResults()
+    public int EvaluateResults()
     {
-
+        int totalHits = 0;
         // pega aqui o resultado de cada dado. Ele retorna a face 
         for (int i = 0; i < activeDices.Count; i++)
         {
-            activeDices[i].EvaluateResults();
+            if(activeDices[i].EvaluateResults() == Dice.DiceResult.Sword)
+            totalHits++;
         }
+
+        return totalHits;
     }
 
 }

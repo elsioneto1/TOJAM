@@ -3,26 +3,28 @@ using System.Collections;
 
 public class Boss : MonoBehaviour {
 
+    private int maxHealth = 100;
     private int health = 100;
+    public GameObject bossCard;
+    public ParticleSystem particle;
+    public int damageTakenPerHit = 10;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    public void DealDamage(int damageAmount)
+	void Start()
     {
-        if ( health - damageAmount > 0 )
-            health -= damageAmount;
+        health = maxHealth;
+    }
+
+    public void DealDamage(int numberOfHits)
+    {
+        int totalDamage = numberOfHits * damageTakenPerHit;
+        if ( health - totalDamage > 0 )
+            health -= totalDamage;
 
         else
             health = 0;
 
-        Debug.Log( "Boss has taken " + damageAmount + " damage and still has " + health + "health");
+        iTween.PunchScale( bossCard, new Vector3( 1.1f,1.1f ), 1f );
+        particle.Play();
+        Debug.Log( "Boss has taken " + totalDamage + " damage and still has " + health + "health");
     }
 }

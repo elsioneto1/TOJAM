@@ -13,7 +13,7 @@ public class EnumHolder : MonoBehaviour {
     {
         D6,
         D8,
-        D12
+        D10
     }
 
     public enum GameState
