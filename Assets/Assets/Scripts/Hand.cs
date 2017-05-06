@@ -3,31 +3,22 @@ using System.Collections;
 
 public class Hand : MonoBehaviour {
 
-    Board.HandType myHandType;
+    EnumHolder.HeroType myHandType;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-    public void SetHand(Board.HandType handType)
+    public void SetHand(EnumHolder.HeroType handType)
     {
         myHandType = handType;
 
         switch(myHandType)
         {
-            case Board.HandType.Mage:
+            case EnumHolder.HeroType.Mage:
                 break;
 
-            case Board.HandType.Ranger:
+            case EnumHolder.HeroType.Ranger:
                 break;
 
-            case Board.HandType.Warrior:
+            case EnumHolder.HeroType.Warrior:
                 break;
         }
     }

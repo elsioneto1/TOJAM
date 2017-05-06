@@ -3,22 +3,26 @@ using System.Collections;
 
 public class Dice : MonoBehaviour {
 
-    public enum DiceType
+    public EnumHolder.DiceType myDiceType;
+    public EnumHolder.HeroType myHeroType;
+
+    public void SetColor(EnumHolder.HeroType heroType)
     {
-        D6,
-        D8,
-        D12
+        myHeroType = heroType;
+
+        switch ( myHeroType )
+        {
+            case EnumHolder.HeroType.Mage:
+                //Blue Dice
+                break;
+
+            case EnumHolder.HeroType.Ranger:
+                //Green Type
+                break;
+
+            case EnumHolder.HeroType.Warrior:
+                //Red Type
+                break;
+        }
     }
-
-    public DiceType currentType;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

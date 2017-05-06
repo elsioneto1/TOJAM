@@ -6,6 +6,6 @@ using System.Collections.Generic;
 public class Wave : ScriptableObject {
 
    
-    public List<Dice.DiceType> diceList = new List<Dice.DiceType>();
+    public List<EnumHolder.DiceType> diceList = new List<EnumHolder.DiceType>();
 
 }
