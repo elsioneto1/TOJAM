@@ -4,7 +4,16 @@ using System.Collections.Generic;
 
 public class Board : MonoBehaviour {
 
-    public static Board instance;
+    static Board _instance;
+    public static Board instance
+    {
+        get
+        {
+            if (_instance == null)
+                _instance = FindObjectOfType<Board>();
+            return _instance;
+        }
+    }
 
     [Header("Hand")]
     #region Hand
@@ -56,7 +65,6 @@ public class Board : MonoBehaviour {
         currentPlayerOrder.Add( EnumHolder.HeroType.Ranger);
 
         CreateRound();
-        instance = this;
     }
 
     void CreateRound()      
@@ -108,7 +116,7 @@ public class Board : MonoBehaviour {
                 case EnumHolder.DiceType.D6:
                     //Criar o d6
                     go = (Instantiate(d6Prefab, transform.position, Quaternion.identity)) as GameObject;
-                    Debug.Log(Dice.SPAWN_BASE);
+
                     go.transform.parent = Dice.SPAWN_BASE.transform;
                     break;
 

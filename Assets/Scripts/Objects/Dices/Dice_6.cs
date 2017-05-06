@@ -8,17 +8,12 @@ public class Dice_6 : Dice
 
 
     
-    Rigidbody rBody;
-    float forceX = 10;
-    float forceY = 10;
+   
 
-    Vector3[] vectors = new Vector3[6];
-    Vector3[] parsedVectors = new Vector3[4];
+   
    
     bool forceApplied = false;
-    float possetionDuration = 0;
    
-    Vector3 input = Vector3.zero;
     [Header("Dice Inputs")]
     public DiceResult Face1;
     public DiceResult Face2;
@@ -26,25 +21,25 @@ public class Dice_6 : Dice
     public DiceResult Face4;
     public DiceResult Face5;
     public DiceResult Face6;
+    public Dictionary<string, DiceResult> results = new Dictionary<string, DiceResult>();
 
 
     // Use this for initialization
     public override void Start () {
 
         base.Start();
-        rBody = GetComponent<Rigidbody>();
         results.Add("right", Face1);
         results.Add("right180", Face2);
         results.Add("up", Face3);
         results.Add("up180", Face4);
         results.Add("forward", Face5);
         results.Add("forward180", Face6);
-        
+
+        parsedVectors = new Vector3[4];
         
     }
 
 
-    float elapsedTime;
 
 	// Update is called once per frame
 	void Update ()
