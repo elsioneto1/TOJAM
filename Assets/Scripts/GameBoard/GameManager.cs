@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour {
         currentGameState = nextState;
         Debug.Log( currentGameState );
 
+        instance.StartCoroutine( "Transition" );
+
         switch (nextState)
         {
             case EnumHolder.GameState.Handing:
@@ -53,10 +55,34 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case EnumHolder.GameState.DamageHeroes:
+                int randomHero = Random.Range( 0, 4 );
+                switch(randomHero)
+                {
+                    case 0:
+                        GetBaseObject( "Mage" ).GetComponent<Hero>().DealDamage(1);
+                        break;
+
+                    case 1:
+                        GetBaseObject( "Warrior" ).GetComponent<Hero>().DealDamage( 1 );
+                        break;
+
+                    case 2:
+                        GetBaseObject( "Ranger" ).GetComponent<Hero>().DealDamage( 1 );
+                        break;
+                }
+                
                 break;
 
             case EnumHolder.GameState.GameOver:
                 break;
         }
+    }
+
+    IEnumerator Transition()
+    {
+        GetBaseObject( "TurnPaper" ).GetComponent<TurnPaper>().SetText( true );
+        yield return new WaitForSeconds( 1 );
+        GetBaseObject( "TurnPaper" ).GetComponent<TurnPaper>().SetText( false );
+
     }
 }

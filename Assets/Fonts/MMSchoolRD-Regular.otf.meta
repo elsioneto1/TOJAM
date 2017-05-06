@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d9e32e354521fb849a2e0cbf08b9c125
+timeCreated: 1494099124
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: MMSchoolRD
+  fontNames:
+  - MMSchoolRD
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

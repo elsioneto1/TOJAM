@@ -24,13 +24,14 @@ public class Board : MonoBehaviour {
     private List<EnumHolder.HeroType> currentPlayerOrder = new List<EnumHolder.HeroType>();
 
     private int currentHero = 0;
+    private EnumHolder.HeroType activeHero;
     #endregion
 
     [Header( "Dice Prefabs" )]
     #region Dice
     public GameObject d6Prefab;
     public GameObject d8Prefab;
-    public GameObject d12Prefab;
+    public GameObject d10Prefab;
 
     #endregion
 
@@ -79,14 +80,19 @@ public class Board : MonoBehaviour {
 
     IEnumerator CreateHand()
     {
-        yield return new WaitForSeconds( timeInitiating );
+        yield return new WaitForSeconds( timeInitiating );  
 
         while (currentHero < 3)
         {
             GameManager.ChangeState( EnumHolder.GameState.Handing );
+            activeHero = currentPlayerOrder[ currentHero ];
 
+            SetHeroActive(true);
+
+            //Seta a mao
             GameObject hand = Instantiate(handPrefab,transform.position, Quaternion.identity) as GameObject;
-            hand.GetComponent<Hand>().SetHand(currentPlayerOrder[currentHero]);
+            hand.GetComponent<Hand>().SetHand( activeHero );
+   
             currentHero++;
 
             yield return new WaitForSeconds( timeHanding );
@@ -94,6 +100,8 @@ public class Board : MonoBehaviour {
             yield return new WaitForSeconds( waveList[currentWave].waveTime);
             DamageBoss();
             yield return new WaitForSeconds( timeDamagingBoss );
+
+            SetHeroActive( false );
         }
 
         DamageHeroes();
@@ -103,6 +111,27 @@ public class Board : MonoBehaviour {
         CreateRound();
        
     }
+
+    void SetHeroActive(bool isActivating)
+    {
+        //Popa o Heroi na UI
+        switch ( activeHero )
+        {
+            case EnumHolder.HeroType.Mage:
+                GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>().SetStarter( isActivating );
+                break;
+
+            case EnumHolder.HeroType.Warrior:
+                GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>().SetStarter( isActivating );
+                break;
+
+            case EnumHolder.HeroType.Ranger:
+                GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>().SetStarter( isActivating );
+                break;
+        }
+
+    }
+
 
     void CreateRoll()
     {
@@ -126,8 +155,9 @@ public class Board : MonoBehaviour {
                     break;
 
                 case EnumHolder.DiceType.D10:
-                    //criar o d12
-                    Instantiate(d12Prefab, transform.position, Quaternion.identity);
+                    go = ( Instantiate( d10Prefab, transform.position, Quaternion.identity ) ) as GameObject;
+
+                    go.transform.parent = Dice.SPAWN_BASE.transform;
                     break;
             }
         }
