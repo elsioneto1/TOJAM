@@ -4,22 +4,35 @@ using UnityEngine;
 
 public class Dice : MonoBehaviour {
 
-    public EnumHolder.DiceType myDiceType;
-    public EnumHolder.HeroType myHeroType;
+    protected Rigidbody rBody ;
 
-    public enum DiceResult { Skull,Sword};
-
+    protected Vector3[] vectors = new Vector3[6];
+    protected Vector3[] parsedVectors;//= new Vector3[4];
     protected float possesingTime = 0.2f;
-    protected bool POSSESSED = false;
-    public float appliedForce = 10;
+    public bool POSSESSED = false;
     protected Vector3 forceRight;
     protected Vector3 forceForward;
     protected Vector3 finalForceVector;
+    protected float possetionDuration = 0;
+    protected Vector3 input = Vector3.zero;
+    protected float elapsedTime;
+
+
+    // kinda random
+    protected float forceX = 10;
+    protected float forceY = 10;
 
     [HideInInspector]
     public PossesRadius whosPossessed;
 
-    public Dictionary<string, DiceResult> results = new Dictionary<string, DiceResult>();
+
+    public EnumHolder.DiceType myDiceType;
+    public EnumHolder.HeroType myHeroType;
+    public float appliedForce = 10;
+
+    public enum DiceResult { Skull, Sword };
+
+    
 
 
     static GameObject _spawnBase;
@@ -38,11 +51,13 @@ public class Dice : MonoBehaviour {
 
     // Use this for initialization
     public  virtual void Start () {
-        Board.instance.activeDices.Add(this);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        Board.instance.activeDices.Add(this);   
+        rBody = GetComponent<Rigidbody>();
+
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
@@ -55,10 +70,13 @@ public class Dice : MonoBehaviour {
     {
         POSSESSED = false;
         Vector3 newPlayerPosition = transform.position;
-        newPlayerPosition.y = whosPossessed.transform.position.y;
-        whosPossessed.transform.position = newPlayerPosition;
-        whosPossessed.PossessionExit();
-        whosPossessed = null;
+        if (whosPossessed != null)
+        {
+            newPlayerPosition.y = whosPossessed.transform.position.y;
+            whosPossessed.transform.position = newPlayerPosition;
+            whosPossessed.PossessionExit();
+            whosPossessed = null;
+        }
     }
 
     public void Clear()
