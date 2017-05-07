@@ -5,7 +5,7 @@ using UnityEngine;
 public class Dice : MonoBehaviour {
 
 
-    public enum DiceState {normal,selected,possessed };
+    public enum DiceState { normal, selected, possessed };
     public DiceState diceState;
 
     Rigidbody _rBody;
@@ -49,7 +49,7 @@ public class Dice : MonoBehaviour {
     public enum DiceResult { Skull, Sword };
 
 
-    float animationCounter = 0 ; // 0 to 360
+    float animationCounter = 0; // 0 to 360
     float animationValue = 0; // 0 to 1
     Color minColor;
     Color maxColor;
@@ -80,9 +80,9 @@ public class Dice : MonoBehaviour {
     }
 
     // Use this for initialization
-    public  virtual void Start () {
+    public virtual void Start() {
 
-        Board.instance.activeDices.Add(this);   
+        Board.instance.activeDices.Add(this);
         MeshRenderer mr = GetComponent<MeshRenderer>();
         newMaterial = new Material(mr.material);
         mr.material = newMaterial;
@@ -92,22 +92,22 @@ public class Dice : MonoBehaviour {
 
     public void SetNormalColor()
     {
-        
+
         minColor = Color.black;
         maxColor = Color.black;
 
-       
+
     }
 
     public void InterpolateAnimationValue()
     {
-        animationCounter+= 2;
+        animationCounter += 2;
         if (animationCounter > 360)
             animationCounter = 0;
-        animationValue = Mathf.Cos((animationCounter * Mathf.PI)/180) * Mathf.Sin((animationCounter * Mathf.PI) / 180);
-       
+        animationValue = Mathf.Cos((animationCounter * Mathf.PI) / 180) * Mathf.Sin((animationCounter * Mathf.PI) / 180);
 
-        currentColor = Color.Lerp(minColor,maxColor, Mathf.Abs(animationValue));
+
+        currentColor = Color.Lerp(minColor, maxColor, Mathf.Abs(animationValue));
 
 
         newMaterial.SetColor("_EmissionColor", currentColor);
@@ -135,10 +135,10 @@ public class Dice : MonoBehaviour {
 
 
     // Update is called once per frame
-    public virtual void Update () {
+    public virtual void Update() {
 
 
-        
+
 
         if (diceState == DiceState.normal)
         {
@@ -171,15 +171,17 @@ public class Dice : MonoBehaviour {
 
     public virtual void OnEndPossesion()
     {
+
         // GAMBIARRA EXTREMA
-        transform.position += Vector3.up * 0.1f;
+        if (IsABouncer.ROLLING)
+            transform.position += Vector3.up * 0.1f;
         // </GAMBIARRA EXTREMA>
 
-
         POSSESSED = false;
-        rBody.velocity = rBody.velocity * 0.5f;
+        //rBody.velocity = rBody.velocity * 0.5f;
         alreadyPossesed = true;
         rBody.mass = 15;
+     
         diceState = DiceState.normal;
         Vector3 newPlayerPosition = transform.position;
         if (whosPossessed != null)
