@@ -8,7 +8,18 @@ public class Dice : MonoBehaviour {
     public enum DiceState {normal,selected,possessed };
     public DiceState diceState;
 
-    protected Rigidbody rBody ;
+    Rigidbody _rBody;
+    public Rigidbody rBody
+    {
+        get
+        {
+            if (_rBody == null)
+            {
+                _rBody = GetComponent<Rigidbody>();
+            }
+            return _rBody;
+        }
+    }
 
     protected Vector3[] vectors = new Vector3[6];
     protected Vector3[] parsedVectors;//= new Vector3[4];
@@ -29,7 +40,7 @@ public class Dice : MonoBehaviour {
 
     [HideInInspector]
     public PossesRadius whosPossessed;
-
+    public bool alreadyPossesed = false;
 
     public EnumHolder.DiceType myDiceType;
     public EnumHolder.HeroType myHeroType;
@@ -72,7 +83,6 @@ public class Dice : MonoBehaviour {
     public  virtual void Start () {
 
         Board.instance.activeDices.Add(this);   
-        rBody = GetComponent<Rigidbody>();
         MeshRenderer mr = GetComponent<MeshRenderer>();
         newMaterial = new Material(mr.material);
         mr.material = newMaterial;
@@ -146,6 +156,9 @@ public class Dice : MonoBehaviour {
 
     public virtual void OnStartPossesion(PossesRadius player)
     {
+        // lock the interaction if already possesed
+        if (alreadyPossesed)
+            return;
         whosPossessed = player;
         diceState = DiceState.possessed;
     }
@@ -153,6 +166,8 @@ public class Dice : MonoBehaviour {
     public virtual void OnEndPossesion()
     {
         POSSESSED = false;
+        alreadyPossesed = true;
+        rBody.mass *= 2;
         diceState = DiceState.normal;
         Vector3 newPlayerPosition = transform.position;
         if (whosPossessed != null)

@@ -5,16 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8C13D572-18CB-BA6C-9849-8F655A98AA09}</ProjectGuid>
+    <ProjectGuid>{F3596885-4FCC-2BC3-7531-6C881438CB7D}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
-    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
@@ -78,34 +78,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="TOJAM.Plugins.csproj">
-      <Project>{F3596885-4FCC-2BC3-7531-6C881438CB7D}</Project>
-      <Name>TOJAM.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Scripts\GameBoard\Board.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\Boss.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\BossHealthBar.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\Debuger.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\EnumHolder.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\GameManager.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\Hand.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\Hero.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\TurnPaper.cs" />
-    <Compile Include="Assets\Scripts\GameBoard\Wave.cs" />
-    <Compile Include="Assets\Scripts\Inputs\InputParser.cs" />
-    <Compile Include="Assets\Scripts\Objects\Dices\Dice.cs" />
-    <Compile Include="Assets\Scripts\Objects\Dices\Dice_10.cs" />
-    <Compile Include="Assets\Scripts\Objects\Dices\Dice_6.cs" />
-    <Compile Include="Assets\Scripts\Objects\Environment\IsTheBoard.cs" />
-    <Compile Include="Assets\Scripts\Objects\HandAsset.cs" />
-    <Compile Include="Assets\Scripts\Objects\IsABouncer.cs" />
-    <Compile Include="Assets\Scripts\Objects\IsAFloor.cs" />
-    <Compile Include="Assets\Scripts\Objects\SpawnPointDice.cs" />
-    <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
-    <Compile Include="Assets\Scripts\Player\PossesRadius.cs" />
-    <Compile Include="Assets\Scripts\Utilities\MathOperations.cs" />
+    <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\MoveSample.cs" />
+    <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\RotateSample.cs" />
+    <Compile Include="Assets\Plugins\Pixelplacement\iTween\Sample\SampleInfo.cs" />
+    <Compile Include="Assets\Plugins\Pixelplacement\iTween\iTween.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Dice\-Read-Me-.txt" />

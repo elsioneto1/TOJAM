@@ -98,6 +98,26 @@ public class Board : MonoBehaviour {
             yield return new WaitForSeconds( timeHanding );
             CreateRoll();
             yield return new WaitForSeconds( waveList[currentWave].waveTime);
+            Dice[] dices = FindObjectsOfType<Dice>();
+            IsABouncer.ROLLING = false;
+            bool allDicesAreSleeping = false;
+            while(!allDicesAreSleeping)
+            {
+                bool b = true;
+                for (int i = 0; i < dices.Length; i++)
+                {
+                    dices[i].rBody.mass = 10;
+                    if (!dices[i].rBody.IsSleeping())
+                    {
+                        b = false;
+                    }
+
+                }
+                allDicesAreSleeping = b;
+                yield return new WaitForEndOfFrame();
+
+            }
+
             DamageBoss();
             yield return new WaitForSeconds( timeDamagingBoss );
 
@@ -136,8 +156,10 @@ public class Board : MonoBehaviour {
     void CreateRoll()
     {
         GameManager.ChangeState( EnumHolder.GameState.Rolling );
+        IsABouncer.ROLLING = true;
         List<EnumHolder.DiceType> tempDiceList = waveList[currentWave].diceList;
         GameObject go;
+        List<Dice> dices = new List<Dice>();
         for (int i = 0; i < tempDiceList.Count; i++)
         {
             switch (tempDiceList[i])
@@ -147,21 +169,35 @@ public class Board : MonoBehaviour {
                     go = (Instantiate(d6Prefab, transform.position, Quaternion.identity)) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
+                    if (go != null)
+                    {
+                        dices.Add(go.GetComponent<Dice>());
+                    }
                     break;
 
                 case EnumHolder.DiceType.D8:
                     //Criar o d8
-                    Instantiate( d8Prefab, transform.position, Quaternion.identity);
+                    go =  Instantiate( d8Prefab, transform.position, Quaternion.identity) as GameObject;
+                    if (go != null)
+                    {
+                        dices.Add(go.GetComponent<Dice>());
+                    }
                     break;
 
                 case EnumHolder.DiceType.D10:
                     go = ( Instantiate( d10Prefab, transform.position, Quaternion.identity ) ) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
+                    if (go != null)
+                    {
+                        dices.Add(go.GetComponent<Dice>());
+                    }
                     break;
+
+              
             }
         }
-
+        HandAsset.instance.SortDicesOnHand(dices);
          
     }
 
