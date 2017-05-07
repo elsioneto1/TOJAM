@@ -5,6 +5,9 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour {
 
 
+    public enum PlayerType { P1, P2 };
+    public PlayerType playerType;
+
     float InputX;
     float InputY;
     SpriteRenderer myRenderer;
@@ -27,8 +30,8 @@ public class PlayerControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        InputX = InputParser.GetHorizontal();
-        InputY = InputParser.GetVertical();
+        InputX = InputParser.GetHorizontal(playerType);
+        InputY = InputParser.GetVertical(playerType);
         // input gatherer
         translate = new Vector3(InputX, 0, InputY);
     }

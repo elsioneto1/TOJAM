@@ -162,6 +162,10 @@ public class Dice : MonoBehaviour {
         // lock the interaction if already possesed
         if (alreadyPossesed)
             return;
+
+        rBody.angularVelocity = Vector3.zero;
+        rBody.Sleep();
+
         whosPossessed = player;
         diceState = DiceState.possessed;
     }
@@ -169,6 +173,7 @@ public class Dice : MonoBehaviour {
     public virtual void OnEndPossesion()
     {
         POSSESSED = false;
+        rBody.velocity = rBody.velocity * 0.5f;
         alreadyPossesed = true;
         rBody.mass = 15;
         diceState = DiceState.normal;
@@ -179,7 +184,6 @@ public class Dice : MonoBehaviour {
             whosPossessed.transform.position = newPlayerPosition;
             whosPossessed.PossessionExit();
             whosPossessed.anim.Play("IdleAndMoving");
-            //whosPossessed.anim.Play("Unpossessing");
             whosPossessed = null;
         }
     }

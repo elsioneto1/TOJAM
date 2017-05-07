@@ -12,7 +12,7 @@ public class PossesRadius : MonoBehaviour {
     float possessionCooldown = 0.5f;
     float _elapsedPossessionCooldown;
     public Animator anim;
-    PlayerControl pControl;
+    public PlayerControl pControl;
     SpriteRenderer myRenderer;
     Vector3 input;
     // Use this for initialization
@@ -26,8 +26,8 @@ public class PossesRadius : MonoBehaviour {
 	void Update () {
 
         
-        float inputX = InputParser.GetHorizontal();
-        float inputY = InputParser.GetVertical();
+        float inputX = InputParser.GetHorizontal(pControl.playerType);
+        float inputY = InputParser.GetVertical(pControl.playerType);
         if (Mathf.Abs(inputX + inputY) > 0.2f)
         {
             input = new Vector3(inputX, 0, inputY);
@@ -71,7 +71,7 @@ public class PossesRadius : MonoBehaviour {
                     if (possessable != null && _elapsedPossessionCooldown < 0)
                     {
                         possessable.diceState = Dice.DiceState.selected;
-                        if (InputParser.GetPossession())
+                        if (InputParser.GetPossession(pControl.playerType   ))
                         {
                             possessable.rBody.velocity = possessable.rBody.velocity.normalized * 2;
                             possessable.OnStartPossesion(this);
