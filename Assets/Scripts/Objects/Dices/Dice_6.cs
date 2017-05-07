@@ -44,14 +44,14 @@ public class Dice_6 : Dice
 	// Update is called once per frame
 	public override void Update ()
     {
-        //Debug.Log(rBody.velocity);
+      //  Debug.Log(rBody.);
         base.Update();
         possetionDuration -= Time.deltaTime;
         if (possetionDuration < 0 && InputParser.GetUnpossession() && POSSESSED)
         {
             OnEndPossesion();
         }
-        if (POSSESSED)
+        if (POSSESSED && !alreadyPossesed)
         {
            // Debug.Log(possetionDuration);
             input = new Vector3(InputParser.GetHorizontal(), 0, InputParser.GetVertical());
@@ -105,6 +105,7 @@ public class Dice_6 : Dice
                     }
                 }
                 finalForceVector = finalForceVector.normalized * appliedForce;
+                //finalForceVector = MathOperations.RotateVectorX(finalForceVector, -30);
                 // force = MathOperations.RotateVectorY(force,(-90 * Mathf.PI )/ 180) * forceX ;
                 // force *= 0.5f;
             }
@@ -175,10 +176,11 @@ public class Dice_6 : Dice
 
     public void FixedUpdate()
     {
+        
         rBody.AddForce(finalForceVector);
         // reset after the force is Applied
         finalForceVector = Vector3.zero;
-
+        
     }
 
     private void OnDrawGizmos()

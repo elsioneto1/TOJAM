@@ -6,30 +6,30 @@ public class IsABouncer : MonoBehaviour {
 
     IsTheBoard board;
     public static bool ROLLING = false;
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         board = GetComponent<IsTheBoard>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 
+    // Update is called once per frame
+    void Update() {
+
+    }
+    bool r = false;
     private void OnCollisionEnter(Collision collision)
     {
-        
+      //  if (r) return;
         Dice d = collision.gameObject.GetComponent<Dice>();
-        if (d.POSSESSED || !ROLLING)
+        if (d.POSSESSED || d.alreadyPossesed || !ROLLING)
             return;
         
         if ( collision.gameObject.GetComponent<Dice>() != null)
         {
 
-            
+            Debug.Log("aa");
+            r = true;
             if (board != null)
             {
-                Debug.Log("aa");
                 Vector3 reflection = d.rBody.velocity - 2 * Vector3.Dot(d.rBody.velocity, transform.forward) * -transform.forward;
                 d.rBody.velocity = Vector3.zero;
                 Vector3 force = reflection + (Vector3.up * 900);
@@ -38,7 +38,7 @@ public class IsABouncer : MonoBehaviour {
                 force.z *= 200;
                 forceTorque.x *= 100;
                 forceTorque.z *= 100;
-                Debug.Log(force);
+
 
                 d.rBody.AddForce(force);
                 d.rBody.AddRelativeTorque(forceTorque, ForceMode.Impulse);
@@ -56,7 +56,7 @@ public class IsABouncer : MonoBehaviour {
                 force.z *= 320;
                 forceTorque.x *= 200;
                 forceTorque.z *= 200;
-                Debug.Log(force);
+
 
                 d.rBody.AddForce(force);
                 d.rBody.AddRelativeTorque(forceTorque, ForceMode.Impulse);

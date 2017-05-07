@@ -83,7 +83,7 @@ public class Dice_10 : Dice {
         {
             OnEndPossesion();
         }
-        if (POSSESSED)
+        if (POSSESSED && ! alreadyPossesed)
         {
             // Debug.Log(possetionDuration);
             input = new Vector3(InputParser.GetHorizontal(), 0, InputParser.GetVertical());
@@ -147,11 +147,10 @@ public class Dice_10 : Dice {
 
     public void FixedUpdate()
     {
-
+      
         rBody.AddForce(finalForceVector);
         // reset after the force is Applied
         finalForceVector = Vector3.zero;
-
     }
 
 

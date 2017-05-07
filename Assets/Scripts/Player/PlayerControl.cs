@@ -7,7 +7,7 @@ public class PlayerControl : MonoBehaviour {
 
     float InputX;
     float InputY;
-    SpriteRenderer renderer;
+    SpriteRenderer myRenderer;
     public float forwardAngleTranslate = 10;
    // public
 
@@ -18,7 +18,9 @@ public class PlayerControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        renderer = GetComponent<SpriteRenderer>();
+        myRenderer = GetComponent<SpriteRenderer>();
+
+        myRenderer.material.renderQueue = 4000;
 
 	}
 	
@@ -41,13 +43,16 @@ public class PlayerControl : MonoBehaviour {
 
         if (translate != Vector3.zero)
         {
-            if (translate.x < -0.1f)
+            if (myRenderer != null)
             {
-                renderer.flipX = true;  
-            }
-            else if ( translate.x > 0.1f)
-            {
-                renderer.flipX = false;
+                if (translate.x < -0.1f)
+                {
+                    myRenderer.flipX = true;
+                }
+                else if (translate.x > 0.1f)
+                {
+                    myRenderer.flipX = false;
+                }
             }
         }
       //  transform.forward = ( translate.normalized);

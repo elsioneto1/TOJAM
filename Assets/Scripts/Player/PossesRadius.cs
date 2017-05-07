@@ -4,19 +4,22 @@ using UnityEngine;
 
 public class PossesRadius : MonoBehaviour {
 
+
+
     public List<Dice> dicesOnRadius = new List<Dice>();
     public List<Dice> diceOnRandiusAndInFrontOfCharacter = new List<Dice>();
 
-    float possessionCooldown = 0.2f;
+    float possessionCooldown = 0.5f;
     float _elapsedPossessionCooldown;
-
+    public Animator anim;
     PlayerControl pControl;
-    SpriteRenderer renderer;
+    SpriteRenderer myRenderer;
     Vector3 input;
     // Use this for initialization
     void Start () {
         pControl = GetComponent<PlayerControl>();
-        renderer = GetComponent<SpriteRenderer>();
+        myRenderer = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -31,6 +34,9 @@ public class PossesRadius : MonoBehaviour {
             input.Normalize();
         }
         diceOnRandiusAndInFrontOfCharacter.Clear();
+        if (pControl.enabled == false)
+            return;
+
         if (GameManager.currentGameState == EnumHolder.GameState.Rolling)
         {
           //  Debug.Log(dicesOnRadius.Count);
@@ -39,7 +45,7 @@ public class PossesRadius : MonoBehaviour {
             {
 
 
-                if (Vector3.Dot((dicesOnRadius[i].transform.position - transform.position).normalized, input.normalized) > 0.8f)
+                if (Vector3.Dot((dicesOnRadius[i].transform.position - transform.position).normalized, input.normalized) > -1f)
                 {
                     diceOnRandiusAndInFrontOfCharacter.Add(dicesOnRadius[i]);
                 }
@@ -67,8 +73,12 @@ public class PossesRadius : MonoBehaviour {
                         possessable.diceState = Dice.DiceState.selected;
                         if (InputParser.GetPossession())
                         {
+                            possessable.rBody.velocity = possessable.rBody.velocity.normalized * 2;
                             possessable.OnStartPossesion(this);
-                            OnPossess();
+                            pControl.enabled = false;
+
+                            anim.SetTrigger("Possessing");
+                            //OnPossess();
                         }
                     }
                 }
@@ -117,14 +127,14 @@ public class PossesRadius : MonoBehaviour {
     public void OnPossess()
     {
         pControl.enabled = false;
-        renderer.enabled = false;
+        myRenderer.enabled = false;
     }
 
 
     public void PossessionExit()
     {
         pControl.enabled = true;
-        renderer.enabled = true;
+        myRenderer.enabled = true;
         _elapsedPossessionCooldown = possessionCooldown; 
 
     }

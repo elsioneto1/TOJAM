@@ -137,6 +137,9 @@ public class Dice : MonoBehaviour {
     // Update is called once per frame
     public virtual void Update () {
 
+
+        
+
         if (diceState == DiceState.normal)
         {
             BlinkMayPossess();
@@ -167,7 +170,7 @@ public class Dice : MonoBehaviour {
     {
         POSSESSED = false;
         alreadyPossesed = true;
-        rBody.mass *= 2;
+        rBody.mass = 15;
         diceState = DiceState.normal;
         Vector3 newPlayerPosition = transform.position;
         if (whosPossessed != null)
@@ -175,6 +178,8 @@ public class Dice : MonoBehaviour {
             newPlayerPosition.y = whosPossessed.transform.position.y;
             whosPossessed.transform.position = newPlayerPosition;
             whosPossessed.PossessionExit();
+            whosPossessed.anim.Play("IdleAndMoving");
+            //whosPossessed.anim.Play("Unpossessing");
             whosPossessed = null;
         }
     }
