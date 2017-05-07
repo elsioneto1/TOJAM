@@ -6,6 +6,23 @@ public class IsABouncer : MonoBehaviour {
 
     IsTheBoard board;
     public static bool ROLLING = false;
+
+
+    [Header("Chão")]
+    public float reflectionForceFloor = 900;
+    public float reflectionForceRotationFloor = 200;
+  
+    public float forceIncrementerFloor = 200;
+    public float forceIncrementerRotationFloor = 100;
+
+
+
+    [Header("Parede")]
+    public float reflectionForceWall = 900;
+    public float reflectionForceRotationWall = 600;
+
+    public float forceIncrementerPreservationWall = 320;
+    public float rotationIncrementerFloorWall = 200;
     // Use this for initialization
     void Start() {
         board = GetComponent<IsTheBoard>();
@@ -26,18 +43,17 @@ public class IsABouncer : MonoBehaviour {
         if ( collision.gameObject.GetComponent<Dice>() != null)
         {
 
-            Debug.Log("aa");
             r = true;
             if (board != null)
             {
                 Vector3 reflection = d.rBody.velocity - 2 * Vector3.Dot(d.rBody.velocity, transform.forward) * -transform.forward;
                 d.rBody.velocity = Vector3.zero;
-                Vector3 force = reflection + (Vector3.up * 900);
-                Vector3 forceTorque = reflection + (Vector3.up * 200);
-                force.x *= 200;
-                force.z *= 200;
-                forceTorque.x *= 100;
-                forceTorque.z *= 100;
+                Vector3 force = reflection + (Vector3.up * reflectionForceFloor);
+                Vector3 forceTorque = reflection + (Vector3.up * reflectionForceRotationFloor);
+                force.x *= forceIncrementerFloor;
+                force.z *= forceIncrementerFloor;
+                forceTorque.x *= forceIncrementerRotationFloor;
+                forceTorque.z *= forceIncrementerRotationFloor;
 
 
                 d.rBody.AddForce(force);
@@ -50,12 +66,12 @@ public class IsABouncer : MonoBehaviour {
                 Debug.Log(name);
                 Vector3 reflection = d.rBody.velocity - 2 * Vector3.Dot(d.rBody.velocity, transform.forward) * transform.forward;
                 d.rBody.velocity = Vector3.zero;
-                Vector3 force = reflection + (Vector3.up * 900);
-                Vector3 forceTorque = reflection + (Vector3.up * 600);
-                force.x *= 320;
-                force.z *= 320;
-                forceTorque.x *= 200;
-                forceTorque.z *= 200;
+                Vector3 force = reflection + (Vector3.up * reflectionForceWall);
+                Vector3 forceTorque = reflection + (Vector3.up * reflectionForceRotationWall);
+                force.x *= forceIncrementerPreservationWall;
+                force.z *= forceIncrementerPreservationWall;
+                forceTorque.x *= rotationIncrementerFloorWall;
+                forceTorque.z *= rotationIncrementerFloorWall;
 
 
                 d.rBody.AddForce(force);
