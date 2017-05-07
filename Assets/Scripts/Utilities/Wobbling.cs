@@ -12,7 +12,7 @@ public class Wobbling : MonoBehaviour {
     }
 	IEnumerator ScaleDown()
     {
-        yield return new WaitForSeconds( 5 );
+        yield return new WaitForSeconds( 4 );
         iTween.ScaleTo( gameObject, new Vector3( 0, 0, 0 ), 1 );
         iTween.ScaleTo( dialogueObject, new Vector3( 0, 0, 0 ), 1 );
     }

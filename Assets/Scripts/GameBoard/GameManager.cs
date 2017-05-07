@@ -45,19 +45,20 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case EnumHolder.GameState.Initiating:
-                instance.activeHero.CallDialogue( EnumHolder.DialogueType.Starter );
+                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Starter );
                 break;
 
             case EnumHolder.GameState.Rolling:
-             
+                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Roll );
                 break;
 
             case EnumHolder.GameState.DamageBoss:
                 //Check Number of Hits on Dice
                 int hits = Board.instance.EvaluateResults();
-                GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage(hits);
 
-                instance.activeHero.CallDialogue( EnumHolder.DialogueType.Hit );
+                instance.StartCoroutine( "HitBoss", hits );
+
+                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Hit );
                 break;
 
             case EnumHolder.GameState.DamageHeroes:
@@ -76,13 +77,31 @@ public class GameManager : MonoBehaviour {
                         GetBaseObject( "Ranger" ).GetComponent<Hero>().DealDamage( 1 );
                         break;
                 }
-
-                instance.activeHero.CallDialogue( EnumHolder.DialogueType.Damage);
+                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
                 break;
 
             case EnumHolder.GameState.GameOver:
                 break;
         }
+    }
+
+    IEnumerator Dialogue(EnumHolder.DialogueType dialogueType)
+    {
+        yield return new WaitForSeconds( 2f );
+        instance.activeHero.CallDialogue( dialogueType );
+    }
+
+    IEnumerator HitBoss(int hitNumber)
+    {
+        int counter = 0;
+
+        while( counter < hitNumber)
+        {
+            GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage( 1 );
+            counter++;
+            yield return new WaitForSeconds( 0.5f );
+        }
+        
     }
 
     IEnumerator Transition()
