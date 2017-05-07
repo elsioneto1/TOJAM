@@ -165,13 +165,17 @@ public class Dice : MonoBehaviour {
 
         rBody.angularVelocity = Vector3.zero;
         rBody.Sleep();
-
         whosPossessed = player;
         diceState = DiceState.possessed;
     }
 
     public virtual void OnEndPossesion()
     {
+        // GAMBIARRA EXTREMA
+        transform.position += Vector3.up * 0.1f;
+        // </GAMBIARRA EXTREMA>
+
+
         POSSESSED = false;
         rBody.velocity = rBody.velocity * 0.5f;
         alreadyPossesed = true;
