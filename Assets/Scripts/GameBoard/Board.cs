@@ -41,8 +41,7 @@ public class Board : MonoBehaviour {
     public float timeInitiating;
     public float timeHanding;
     public float timeInBetweenRolls;
-    public float timeDamagingBoss;
-    public float timeDamaginHeroes;
+    public float timeCombat;
     #endregion
 
     [Header( "WaveData" )]
@@ -133,8 +132,8 @@ public class Board : MonoBehaviour {
 
             }
 
-            DamageBoss();
-            yield return new WaitForSeconds( timeDamagingBoss );
+            Combat();
+            yield return new WaitForSeconds( timeCombat );
 
             SetHeroActive( false );
 
@@ -143,8 +142,7 @@ public class Board : MonoBehaviour {
 
         else
         {
-            DamageHeroes();
-            yield return new WaitForSeconds( timeDamaginHeroes );
+            //yield return new WaitForSeconds( timeCombat );
             currentRound++;
             currentHero = 0;
             CreateRound();
@@ -229,21 +227,30 @@ public class Board : MonoBehaviour {
          
     }
 
-    void DamageBoss()
+    void Combat()
     {
-        //Chamar Dano do Boss
-        GameManager.ChangeState( EnumHolder.GameState.DamageBoss);
+        GameManager.ChangeState( EnumHolder.GameState.Combat );
         currentWave++;
-    }
 
-    void DamageHeroes()
-    {
-        //Chamar Dano nos Herois
-        GameManager.ChangeState( EnumHolder.GameState.DamageHeroes );
-
-        if (currentWave == waveList.Count)
+        if ( currentWave == waveList.Count )
             EndGame();
     }
+
+    //void DamageBoss()
+    //{
+    //    //Chamar Dano do Boss
+    //    GameManager.ChangeState( EnumHolder.GameState.DamageBoss);
+    //    currentWave++;
+    //}
+
+    //void DamageHeroes()
+    //{
+    //    //Chamar Dano nos Herois
+    //    GameManager.ChangeState( EnumHolder.GameState.DamageHeroes );
+
+    //    if (currentWave == waveList.Count)
+    //        EndGame();
+    //}
 
     
     void EndGame()

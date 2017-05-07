@@ -22,8 +22,7 @@ public class EnumHolder : MonoBehaviour {
         Initiating,
         Handing,
         Rolling,
-        DamageBoss,
-        DamageHeroes,
+        Combat,
         GameOver
     }
 

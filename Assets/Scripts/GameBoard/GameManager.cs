@@ -52,36 +52,61 @@ public class GameManager : MonoBehaviour {
                 instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Roll );
                 break;
 
-            case EnumHolder.GameState.DamageBoss:
-                //Check Number of Hits on Dice
+            case EnumHolder.GameState.Combat:
                 int hits = Board.instance.EvaluateResults();
-
                 instance.StartCoroutine( "HitBoss", hits );
-
                 instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Hit );
-                break;
 
-            case EnumHolder.GameState.DamageHeroes:
                 int randomHero = Random.Range( 0, 4 );
-                switch(randomHero)
-                {
-                    case 0:
-                        GetBaseObject( "Mage" ).GetComponent<Hero>().DealDamage(1);
-                        break;
+                    switch(randomHero)
+                    {
+                        case 0:
+                            GetBaseObject( "Mage" ).GetComponent<Hero>().DealDamage(1);
+                            break;
 
-                    case 1:
-                        GetBaseObject( "Warrior" ).GetComponent<Hero>().DealDamage( 1 );
-                        break;
+                        case 1:
+                            GetBaseObject( "Warrior" ).GetComponent<Hero>().DealDamage( 1 );
+                            break;
 
-                    case 2:
-                        GetBaseObject( "Ranger" ).GetComponent<Hero>().DealDamage( 1 );
-                        break;
-                }
-                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
+                        case 2:
+                            GetBaseObject( "Ranger" ).GetComponent<Hero>().DealDamage( 1 );
+                            break;
+                    }
+                    instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
                 break;
+
 
             case EnumHolder.GameState.GameOver:
                 break;
+
+                //case EnumHolder.GameState.DamageBoss:
+                //    //Check Number of Hits on Dice
+                //    int hits = Board.instance.EvaluateResults();
+
+                //    instance.StartCoroutine( "HitBoss", hits );
+
+                //    instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Hit );
+                //    break;
+
+                //case EnumHolder.GameState.DamageHeroes:
+                //    int randomHero = Random.Range( 0, 4 );
+                //    switch(randomHero)
+                //    {
+                //        case 0:
+                //            GetBaseObject( "Mage" ).GetComponent<Hero>().DealDamage(1);
+                //            break;
+
+                //        case 1:
+                //            GetBaseObject( "Warrior" ).GetComponent<Hero>().DealDamage( 1 );
+                //            break;
+
+                //        case 2:
+                //            GetBaseObject( "Ranger" ).GetComponent<Hero>().DealDamage( 1 );
+                //            break;
+                //    }
+                //    instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
+                //    break;
+
         }
     }
 
