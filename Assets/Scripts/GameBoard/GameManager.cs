@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     public List<GameObject> baseObjects = new List<GameObject>();
 
     public static GameManager instance;
+
+    public Hero activeHero;
     
 
     void Awake()
@@ -43,15 +45,19 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case EnumHolder.GameState.Initiating:
+                instance.activeHero.CallDialogue( EnumHolder.DialogueType.Starter );
                 break;
 
             case EnumHolder.GameState.Rolling:
+             
                 break;
 
             case EnumHolder.GameState.DamageBoss:
                 //Check Number of Hits on Dice
                 int hits = Board.instance.EvaluateResults();
                 GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage(hits);
+
+                instance.activeHero.CallDialogue( EnumHolder.DialogueType.Hit );
                 break;
 
             case EnumHolder.GameState.DamageHeroes:
@@ -70,7 +76,8 @@ public class GameManager : MonoBehaviour {
                         GetBaseObject( "Ranger" ).GetComponent<Hero>().DealDamage( 1 );
                         break;
                 }
-                
+
+                instance.activeHero.CallDialogue( EnumHolder.DialogueType.Damage);
                 break;
 
             case EnumHolder.GameState.GameOver:
