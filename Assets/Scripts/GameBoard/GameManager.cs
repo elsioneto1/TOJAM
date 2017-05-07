@@ -53,25 +53,16 @@ public class GameManager : MonoBehaviour {
                 break;
 
             case EnumHolder.GameState.Combat:
-                int hits = Board.instance.EvaluateResults();
-                instance.StartCoroutine( "HitBoss", hits );
-                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Hit );
+                int swords = Board.instance.EvaluateResults();
+                int skulls = Board.instance.activeDices.Count - swords;
 
-                int randomHero = Random.Range( 0, 4 );
-                    switch(randomHero)
-                    {
-                        case 0:
-                            GetBaseObject( "Mage" ).GetComponent<Hero>().DealDamage(1);
-                            break;
+                instance.StartCoroutine( "HitBoss", swords );
+                instance.StartCoroutine( "HitHeroes", skulls );
 
-                        case 1:
-                            GetBaseObject( "Warrior" ).GetComponent<Hero>().DealDamage( 1 );
-                            break;
+                if(swords > skulls)
+                    instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Hit );
 
-                        case 2:
-                            GetBaseObject( "Ranger" ).GetComponent<Hero>().DealDamage( 1 );
-                            break;
-                    }
+                else
                     instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
                 break;
 
@@ -116,17 +107,44 @@ public class GameManager : MonoBehaviour {
         instance.activeHero.CallDialogue( dialogueType );
     }
 
-    IEnumerator HitBoss(int hitNumber)
+    IEnumerator HitBoss(int swordNumber)
     {
-        int counter = 0;
-
-        while( counter < hitNumber)
+        if(swordNumber > 0 )
         {
-            GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage( 1 );
-            counter++;
-            yield return new WaitForSeconds( 0.5f );
+            int counter = 0;
+
+            Board.instance.CallDamageEffects( true, GetBaseObject( "Boss" ).transform.GetChild( 0 ).GetComponent<RectTransform>().position );
+
+            yield return new WaitForSeconds( 2 );
+
+            while ( counter < swordNumber )
+            {
+                GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage( 1 );
+                counter++;
+                yield return new WaitForSeconds( 0.5f );
+            }
+
         }
-        
+
+        yield return new WaitForSeconds( 0 );
+    }
+
+
+    IEnumerator HitHeroes(int skullnumber)
+    {
+        if(skullnumber > 0)
+        {
+            Board.instance.CallDamageEffects( false, activeHero.GetComponent<RectTransform>().position );
+
+                yield return new WaitForSeconds(2);
+
+                activeHero.DealDamage( 1 );
+            
+   
+            instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
+        }
+
+        yield return new WaitForSeconds( 0 );
     }
 
     IEnumerator Transition()

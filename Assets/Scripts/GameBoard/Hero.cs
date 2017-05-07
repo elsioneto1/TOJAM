@@ -36,7 +36,7 @@ public class Hero : MonoBehaviour {
         else
             health = 0;
 
-
+        
         iTween.PunchRotation( gameObject, new Vector3( 0,0, 15 ), 1 );
         lifeText.text = health.ToString();
     }

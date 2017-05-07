@@ -32,7 +32,9 @@ public class Board : MonoBehaviour {
     public GameObject d6Prefab;
     public GameObject d8Prefab;
     public GameObject d10Prefab;
-    public GameObject hitPrefab;
+    // public GameObject hitPrefab;
+    public GameObject swordFeedback;
+    public GameObject skullFeedback;
 
     #endregion
 
@@ -146,13 +148,9 @@ public class Board : MonoBehaviour {
             currentRound++;
             currentHero = 0;
             CreateRound();
-        }
-      
-       
+        } 
     }
-
-    
-
+   
     void SetHeroActive(bool isActivating)
     {
 
@@ -294,30 +292,83 @@ public class Board : MonoBehaviour {
             totalHits++;
 
 
-            GameObject hitFeedback = Instantiate( hitPrefab, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
+          //  GameObject hitFeedback = Instantiate( hitPrefab, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
 
-            RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
-            Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( hitFeedback.transform.position );
-            Vector2 WorldObject_ScreenPosition = new Vector2(
-            ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
-            ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
-            WorldObject_ScreenPosition.x += 1920 * 0.5f;
-            WorldObject_ScreenPosition.y += 1080 * 0.5f;
+           //RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
+            //Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( hitFeedback.transform.position );
+            //Vector2 WorldObject_ScreenPosition = new Vector2(
+            //( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
+            //( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
+            //WorldObject_ScreenPosition.x += 1920 * 0.5f;
+            //WorldObject_ScreenPosition.y += 1080 * 0.5f;
             //now you can set the position of the ui element
-            hitFeedback.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
+            //hitFeedback.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
 
 
-            hitFeedback.transform.SetParent(GameManager.GetBaseObject( "Canvas" ).transform);
+           // hitFeedback.transform.SetParent(GameManager.GetBaseObject( "Canvas" ).transform);
             //hitFeedback.transform.position = hitFeedback.transform.GetComponent<Canvas>().worldCamera.WorldToViewportPoint( hitFeedback.transform.position );
           //  Vector3 newPoint = hitFeedback.transform.position;
           
            // hitFeedback.transform .position
+
 
         }
 
         return totalHits;
     }
 
+    public void CallDamageEffects( bool isHeroes, Vector3 rectTransformPosition )
+    {
+        for ( int i = 0; i < activeDices.Count; i++ )
+        {
+            if ( activeDices[ i ].EvaluateResults() == Dice.DiceResult.Sword )
+            {
+                    if ( isHeroes )
+                    {
+                        GameObject feedbackIcon = Instantiate( swordFeedback, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
+                        RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
+                        Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( feedbackIcon.transform.position );
+                        Vector2 WorldObject_ScreenPosition = new Vector2(
+                        ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
+                        ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
+                        WorldObject_ScreenPosition.x += 1920 * 0.5f;
+                        WorldObject_ScreenPosition.y += 1080 * 0.5f;
+                    //now you can set the position of the ui element
+                    feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
+
+
+                    feedbackIcon.transform.SetParent( GameManager.GetBaseObject( "Canvas" ).transform );
+
+
+                    feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition( rectTransformPosition);
+                }
+         
+            }
+
+            else
+            {
+                if (!isHeroes )
+                {
+                    GameObject feedbackIcon = Instantiate( skullFeedback, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
+                    RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
+                    Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( feedbackIcon.transform.position );
+                    Vector2 WorldObject_ScreenPosition = new Vector2(
+                    ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
+                    ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
+                    WorldObject_ScreenPosition.x += 1920 * 0.5f;
+                    WorldObject_ScreenPosition.y += 1080 * 0.5f;
+                    //now you can set the position of the ui element
+                    feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
+
+
+                    feedbackIcon.transform.SetParent( GameManager.GetBaseObject( "Canvas" ).transform );
+
+                    feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition( rectTransformPosition );
+                }
+
+            }
+        }
+    }
 }
 
 
