@@ -62,8 +62,11 @@ public class Dice : MonoBehaviour {
     public Color MaxColor_Selected;
     public Color MinColor_Selected;
 
-    public Color MaxColor_Possessed;
-    public Color MinColor_Possessed;
+    public Color MaxColor_Possessed_P1;
+    public Color MinColor_Possessed_P1;
+
+    public Color MaxColor_Possessed_P2;
+    public Color MinColor_Possessed_P2;
 
 
     static GameObject _spawnBase;
@@ -87,7 +90,7 @@ public class Dice : MonoBehaviour {
         newMaterial = new Material(mr.material);
         mr.material = newMaterial;
         newMaterial.SetColor("_EmissionColor", Color.black);
-        BlinkPossessed();
+        //BlinkPossessed(whosPossessed.GetComponent<PlayerControl>());
     }
 
     public void SetNormalColor()
@@ -120,11 +123,19 @@ public class Dice : MonoBehaviour {
 
     }
 
-    public void BlinkPossessed()
+    public void BlinkPossessed(PlayerControl pc)
     {
-        minColor = MinColor_Possessed;
-        maxColor = MaxColor_Possessed;
-
+        Debug.Log("aa");
+        if (pc.playerType == PlayerControl.PlayerType.P1)
+        {
+            minColor = MinColor_Possessed_P1;
+            maxColor = MaxColor_Possessed_P1;
+        }
+        else
+        {
+            minColor = MinColor_Possessed_P2;
+            maxColor = MaxColor_Possessed_P2;
+        }
     }
 
     public void BlinkSelected()
@@ -146,7 +157,8 @@ public class Dice : MonoBehaviour {
         }
         else if (diceState == DiceState.possessed)
         {
-            BlinkPossessed();
+            if (whosPossessed != null)
+                BlinkPossessed(whosPossessed.GetComponent<PlayerControl>());
         }
         else if (diceState == DiceState.selected)
         {
@@ -163,29 +175,48 @@ public class Dice : MonoBehaviour {
         if (alreadyPossesed)
             return;
 
+
+        player.GetComponent<GhostSprites>().HideTrail();
+        player.GetComponent<GhostSprites>().killSwitch = true;
+        player.GetComponent<PlayerControl>().shadow.SetActive(false);
+
         rBody.angularVelocity = Vector3.zero;
         rBody.Sleep();
         whosPossessed = player;
         diceState = DiceState.possessed;
     }
 
-    public virtual void OnEndPossesion()
+    public void JumpGambiarra()
     {
-
         // GAMBIARRA EXTREMA
-        if (IsABouncer.ROLLING)
+        Debug.Log("gambijump");
             transform.position += Vector3.up * 0.1f;
         // </GAMBIARRA EXTREMA>
+    }
 
+    public virtual void OnEndPossesion()
+    {
+        //  GetComponent<GhostSprites>().killSwitch = false;
+      
+
+        if (IsABouncer.ROLLING)
+        {
+            JumpGambiarra();
+            rBody.mass = 15;
+        }
         POSSESSED = false;
         //rBody.velocity = rBody.velocity * 0.5f;
         alreadyPossesed = true;
-        rBody.mass = 15;
+       
      
         diceState = DiceState.normal;
         Vector3 newPlayerPosition = transform.position;
+        Debug.Log(whosPossessed);
         if (whosPossessed != null)
         {
+            whosPossessed.GetComponent<GhostSprites>().killSwitch = false;
+            whosPossessed.GetComponent<PlayerControl>().shadow.SetActive(true);
+            whosPossessed.GetComponent<GhostSprites>().ShowTrail(whosPossessed.transform.position);
             newPlayerPosition.y = whosPossessed.transform.position.y;
             whosPossessed.transform.position = newPlayerPosition;
             whosPossessed.PossessionExit();

@@ -32,10 +32,9 @@ public class IsABouncer : MonoBehaviour {
     void Update() {
 
     }
-    bool r = false;
     private void OnCollisionEnter(Collision collision)
     {
-      //  if (r) return;
+      
         Dice d = collision.gameObject.GetComponent<Dice>();
         if (d.POSSESSED || d.alreadyPossesed || !ROLLING)
             return;
@@ -43,7 +42,7 @@ public class IsABouncer : MonoBehaviour {
         if ( collision.gameObject.GetComponent<Dice>() != null)
         {
 
-            r = true;
+
             if (board != null)
             {
                 Vector3 reflection = d.rBody.velocity - 2 * Vector3.Dot(d.rBody.velocity, transform.forward) * -transform.forward;
@@ -63,7 +62,7 @@ public class IsABouncer : MonoBehaviour {
             }
             else
             {
-                //Debug.Log(name);
+
                 Vector3 reflection = d.rBody.velocity - 2 * Vector3.Dot(d.rBody.velocity, transform.forward) * transform.forward;
                 d.rBody.velocity = Vector3.zero;
                 Vector3 force = reflection + (Vector3.up * reflectionForceWall);

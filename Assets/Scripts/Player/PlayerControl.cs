@@ -11,8 +11,14 @@ public class PlayerControl : MonoBehaviour {
     float InputX;
     float InputY;
     SpriteRenderer myRenderer;
+    public GameObject shadow; 
     public float forwardAngleTranslate = 10;
-   // public
+    public float boundXLeft;
+    public float boundXRight;
+    public float boundYUp;
+    public float boundYDown;
+
+    // public
 
     public float speed;
     Vector3 translate;
@@ -44,6 +50,7 @@ public class PlayerControl : MonoBehaviour {
         // move the fockn character
         transform.position += (translate * Time.fixedDeltaTime * speed);
 
+
         if (translate != Vector3.zero)
         {
             if (myRenderer != null)
@@ -58,7 +65,20 @@ public class PlayerControl : MonoBehaviour {
                 }
             }
         }
-      //  transform.forward = ( translate.normalized);
+
+        Vector3 correctedPosition = transform.position;
+        if (correctedPosition.x < boundXLeft)
+            correctedPosition.x = boundXLeft;
+        if (correctedPosition.x > boundXRight)
+            correctedPosition.x = boundXRight;
+
+        if (correctedPosition.z < boundYDown)
+            correctedPosition.z = boundYDown;
+        if (correctedPosition.z > boundYUp)
+            correctedPosition.z = boundYUp;
+        transform.position = correctedPosition;
+
+        //  transform.forward = ( translate.normalized);
 
     }
 
