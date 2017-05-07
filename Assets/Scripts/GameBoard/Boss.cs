@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class Boss : MonoBehaviour {
 
-    private int maxHealth = 100;
-    private int health = 100;
+    private int maxHealth = 20;
+    public int health = 20;
     public GameObject bossCard;
     public Text bossText;
     public ParticleSystem particle;

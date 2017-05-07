@@ -26,4 +26,12 @@ public class EnumHolder : MonoBehaviour {
         DamageHeroes,
         GameOver
     }
+
+    public enum DialogueType
+    {
+        Starter,
+        Hit,
+        Curse,
+        Damage
+    }
 }

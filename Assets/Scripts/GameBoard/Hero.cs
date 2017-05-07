@@ -8,6 +8,16 @@ public class Hero : MonoBehaviour {
     public int maxHealth = 12;
     public int health = 4;
 
+    public GameObject baloon;
+    public GameObject dialogueText;
+
+    public List<string> enteringList = new List<string>();
+    public List<string> hitList = new List<string>();
+    public List<string> cursingList = new List<string>();
+    public List<string> damageList = new List<string>();
+
+    string currentDialogue;
+
     public void SetStarter( bool isActive )
     {
         if ( isActive )
@@ -25,6 +35,35 @@ public class Hero : MonoBehaviour {
         else
             health = 0;
 
+
+        iTween.PunchRotation( gameObject, new Vector3( 0,0, 15 ), 1 );
         lifeText.text = health.ToString();
+    }
+
+    public void CallDialogue(EnumHolder.DialogueType dialogueType)
+    {
+        switch(dialogueType)
+        {
+            case EnumHolder.DialogueType.Starter:
+                currentDialogue = enteringList[ Random.Range( 0, enteringList.Count ) ];
+                break;
+
+            case EnumHolder.DialogueType.Hit:
+                currentDialogue = hitList[ Random.Range( 0, hitList.Count ) ];
+                break;
+
+            case EnumHolder.DialogueType.Curse:
+                currentDialogue = cursingList[ Random.Range( 0, cursingList.Count ) ];
+                break;
+
+            case EnumHolder.DialogueType.Damage:
+                currentDialogue = damageList[ Random.Range( 0, damageList.Count ) ];
+                break;
+        }
+
+        baloon.GetComponent<Wobbling>().Grow();
+       // baloon.GetComponent<AlphaDecaySprite>().StartAlphaDecay();
+       // dialogueText.GetComponent<AlphaDecay>().StartAlphaDecay();
+        dialogueText.GetComponent<Text>().text = currentDialogue;
     }
 }

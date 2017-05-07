@@ -101,7 +101,11 @@
     <Compile Include="Assets\Scripts\Objects\Environment\IsTheBoard.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Player\PossesRadius.cs" />
+    <Compile Include="Assets\Scripts\Utilities\AlphaDecay.cs" />
+    <Compile Include="Assets\Scripts\Utilities\AlphaDecaySprite.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Blinking.cs" />
     <Compile Include="Assets\Scripts\Utilities\MathOperations.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Wobbling.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Dice\-Read-Me-.txt" />

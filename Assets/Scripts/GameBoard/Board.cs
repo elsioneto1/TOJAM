@@ -32,6 +32,7 @@ public class Board : MonoBehaviour {
     public GameObject d6Prefab;
     public GameObject d8Prefab;
     public GameObject d10Prefab;
+    public GameObject hitPrefab;
 
     #endregion
 
@@ -72,22 +73,34 @@ public class Board : MonoBehaviour {
     {
         if(currentRound <= waveList.Count/3)
         {
-            GameManager.ChangeState( EnumHolder.GameState.Initiating );
             Shuffle( currentPlayerOrder );
-            StartCoroutine("CreateHand");
+            Initiate();
+
         }
     }
 
+    void Initiate()
+    {
+        //Bug quando acaba o jogo
+        activeHero = currentPlayerOrder[ currentHero ];
+        SetHeroActive( true );
+
+        GameManager.ChangeState( EnumHolder.GameState.Initiating );
+
+  
+
+        StartCoroutine( "CreateHand" );
+
+    }
+    
     IEnumerator CreateHand()
     {
-        yield return new WaitForSeconds( timeInitiating );  
-
-        while (currentHero < 3)
+       
+        if (currentHero < 3)
         {
-            GameManager.ChangeState( EnumHolder.GameState.Handing );
-            activeHero = currentPlayerOrder[ currentHero ];
+            yield return new WaitForSeconds( timeInitiating );
 
-            SetHeroActive(true);
+            GameManager.ChangeState( EnumHolder.GameState.Handing );
 
             //Seta a mao
             GameObject hand = Instantiate(handPrefab,transform.position, Quaternion.identity) as GameObject;
@@ -122,31 +135,42 @@ public class Board : MonoBehaviour {
             yield return new WaitForSeconds( timeDamagingBoss );
 
             SetHeroActive( false );
+            Initiate();
         }
 
-        DamageHeroes();
-        yield return new WaitForSeconds( timeDamaginHeroes );
-        currentRound++;
-        currentHero = 0;
-        CreateRound();
+        else
+        {
+            DamageHeroes();
+            yield return new WaitForSeconds( timeDamaginHeroes );
+            currentRound++;
+            currentHero = 0;
+            CreateRound();
+        }
+      
        
     }
 
+    
+
     void SetHeroActive(bool isActivating)
     {
+
         //Popa o Heroi na UI
         switch ( activeHero )
         {
             case EnumHolder.HeroType.Mage:
                 GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>().SetStarter( isActivating );
+                GameManager.instance.activeHero = GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>();
                 break;
 
             case EnumHolder.HeroType.Warrior:
                 GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>().SetStarter( isActivating );
+                GameManager.instance.activeHero = GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>();
                 break;
 
             case EnumHolder.HeroType.Ranger:
                 GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>().SetStarter( isActivating );
+                GameManager.instance.activeHero = GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>();
                 break;
         }
 
@@ -257,8 +281,31 @@ public class Board : MonoBehaviour {
         {
             if(activeDices[i].EvaluateResults() == Dice.DiceResult.Sword)
             totalHits++;
+
+           
+
+
+            GameObject hitFeedback = Instantiate( hitPrefab, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
+
+            RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
+            Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( hitFeedback.transform.position );
+            Vector2 WorldObject_ScreenPosition = new Vector2(
+            ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
+            ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
+
+            //now you can set the position of the ui element
+            hitFeedback.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
+
+
+            hitFeedback.transform.SetParent(GameManager.GetBaseObject( "Canvas" ).transform);
+            //hitFeedback.transform.position = hitFeedback.transform.GetComponent<Canvas>().worldCamera.WorldToViewportPoint( hitFeedback.transform.position );
+          //  Vector3 newPoint = hitFeedback.transform.position;
+          
+           // hitFeedback.transform .position
+
         }
 
+        Debug.Log( totalHits );
         return totalHits;
     }
 
