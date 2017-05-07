@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour {
 
 
+    public enum PlayerType { P1, P2 };
+    public PlayerType playerType;
+
     float InputX;
     float InputY;
-    SpriteRenderer renderer;
+    SpriteRenderer myRenderer;
     public float forwardAngleTranslate = 10;
    // public
 
@@ -18,15 +21,17 @@ public class PlayerControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        renderer = GetComponent<SpriteRenderer>();
+        myRenderer = GetComponent<SpriteRenderer>();
+
+        myRenderer.material.renderQueue = 4000;
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-        InputX = InputParser.GetHorizontal();
-        InputY = InputParser.GetVertical();
+        InputX = InputParser.GetHorizontal(playerType);
+        InputY = InputParser.GetVertical(playerType);
         // input gatherer
         translate = new Vector3(InputX, 0, InputY);
     }
@@ -41,13 +46,16 @@ public class PlayerControl : MonoBehaviour {
 
         if (translate != Vector3.zero)
         {
-            if (translate.x < -0.1f)
+            if (myRenderer != null)
             {
-                renderer.flipX = true;  
-            }
-            else if ( translate.x > 0.1f)
-            {
-                renderer.flipX = false;
+                if (translate.x < -0.1f)
+                {
+                    myRenderer.flipX = true;
+                }
+                else if (translate.x > 0.1f)
+                {
+                    myRenderer.flipX = false;
+                }
             }
         }
       //  transform.forward = ( translate.normalized);

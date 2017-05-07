@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Rodrigo.unity
+- path: Assets/Scenes/Rodrigo_DomingoDeManha.unity
   isLoaded: 1
   isActive: 1

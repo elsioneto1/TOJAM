@@ -43,7 +43,7 @@ public class HandAsset : MonoBehaviour {
 
                 spawnPoints[i].holdingDice.rBody.useGravity = true;
                 spawnPoints[i].holdingDice.rBody.isKinematic = false;
-
+                Debug.Log("aaaa");
                 spawnPoints[i].holdingDice.rBody.AddForce(forces[index]);
                 spawnPoints[i].holdingDice.rBody.AddRelativeTorque(forces[index], ForceMode.Impulse);
                 Debug.Log(forces[random]);

@@ -137,6 +137,9 @@ public class Dice : MonoBehaviour {
     // Update is called once per frame
     public virtual void Update () {
 
+
+        
+
         if (diceState == DiceState.normal)
         {
             BlinkMayPossess();
@@ -159,15 +162,24 @@ public class Dice : MonoBehaviour {
         // lock the interaction if already possesed
         if (alreadyPossesed)
             return;
+
+        rBody.angularVelocity = Vector3.zero;
+        rBody.Sleep();
         whosPossessed = player;
         diceState = DiceState.possessed;
     }
 
     public virtual void OnEndPossesion()
     {
+        // GAMBIARRA EXTREMA
+        transform.position += Vector3.up * 0.1f;
+        // </GAMBIARRA EXTREMA>
+
+
         POSSESSED = false;
+        rBody.velocity = rBody.velocity * 0.5f;
         alreadyPossesed = true;
-        rBody.mass *= 2;
+        rBody.mass = 15;
         diceState = DiceState.normal;
         Vector3 newPlayerPosition = transform.position;
         if (whosPossessed != null)
@@ -175,6 +187,7 @@ public class Dice : MonoBehaviour {
             newPlayerPosition.y = whosPossessed.transform.position.y;
             whosPossessed.transform.position = newPlayerPosition;
             whosPossessed.PossessionExit();
+            whosPossessed.anim.Play("IdleAndMoving");
             whosPossessed = null;
         }
     }

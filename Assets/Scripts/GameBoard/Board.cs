@@ -116,21 +116,53 @@ public class Board : MonoBehaviour {
             yield return new WaitForSeconds( waveList[currentWave].waveTime);
             Dice[] dices = FindObjectsOfType<Dice>();
             IsABouncer.ROLLING = false;
+            int maxFrames = 20;
+            int frameCount = 0;
             bool allDicesAreSleeping = false;
             while(!allDicesAreSleeping)
             {
                 bool b = true;
                 for (int i = 0; i < dices.Length; i++)
                 {
-                    dices[i].rBody.mass = 10;
+
+                    Vector3 velocity = dices[i].rBody.velocity;
+
+
                     if (!dices[i].rBody.IsSleeping())
                     {
                         b = false;
                     }
+                    if (frameCount > maxFrames)
+                    {
+                        if (!dices[i].rBody.IsSleeping())
+                        {
+                            if ( velocity.magnitude > 1 )
+                            {
+                               // dices[i].rBody.velocity *= 08f;
+                            }
+                            else
+                           // dices[i].rBody.Sleep();
+                            
+                            Debug.Log("not sleeping");
+                            b = false;
+                        }
+                    }
+                    else
+                    {
+                        dices[i].rBody.mass = 20;
+                        dices[i].rBody.angularVelocity = Vector3.zero;
+                    }
+
+                   
+                   // Debug.Log(dices[i].rBody.velocity);
+                    dices[i].OnEndPossesion();
+                   
 
                 }
                 allDicesAreSleeping = b;
                 yield return new WaitForEndOfFrame();
+                frameCount++;
+               
 
             }
 
@@ -181,7 +213,8 @@ public class Board : MonoBehaviour {
         GameManager.ChangeState( EnumHolder.GameState.Rolling );
         IsABouncer.ROLLING = true;
         List<EnumHolder.DiceType> tempDiceList = waveList[currentWave].diceList;
-        PhantomMode.instance.StartPhantom(waveList[currentWave].waveTime);
+        if (PhantomMode.instance)
+            PhantomMode.instance.StartPhantom(waveList[currentWave].waveTime);
         GameObject go;
         List<Dice> dices = new List<Dice>();
         for (int i = 0; i < tempDiceList.Count; i++)

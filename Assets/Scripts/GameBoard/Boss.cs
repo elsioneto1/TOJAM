@@ -28,7 +28,9 @@ public class Boss : MonoBehaviour {
             health = 0;
 
         iTween.PunchScale( bossCard, new Vector3( 0.5f,0.5f ), 0.45f );
-        iTween.PunchScale( textObject, new Vector3( 0.5f, 0.5f ), 0.45f );
+
+        //consertar
+      //  iTween.PunchScale( textObject, new Vector3( 0.5f, 0.5f ), 0.45f );
 
         bossText.text = health.ToString();
 

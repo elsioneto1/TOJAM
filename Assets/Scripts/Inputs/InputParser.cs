@@ -6,34 +6,34 @@ public class InputParser : MonoBehaviour
 {
 
 
-    public static float GetHorizontal()
+    public static float GetHorizontal(PlayerControl.PlayerType pType)
     {
         float returnValue = 0;
 
-        returnValue = Input.GetAxis("Horizontal");
+        returnValue = Input.GetAxis("Horizontal" + pType.ToString());
 
         return returnValue;
 
     }
 
 
-    public static float GetVertical()
+    public static float GetVertical(PlayerControl.PlayerType pType)
     {
 
         float returnValue = 0;
 
-        returnValue = Input.GetAxis("Vertical");
+        returnValue = Input.GetAxis("Vertical" + pType.ToString());
 
         return returnValue;
 
 
     }
 
-    public static bool GetPossession()
+    public static bool GetPossession(PlayerControl.PlayerType pType)
     {
         bool returnValue = false;
 
-        if (Input.GetAxis("Fire1") == 1)
+        if (Input.GetAxis("Fire" + pType.ToString()) == 1)
         {
             returnValue = true;
         }
@@ -41,11 +41,11 @@ public class InputParser : MonoBehaviour
         return returnValue;
     }
 
-    public static bool GetUnpossession()
+    public static bool GetUnpossession(PlayerControl.PlayerType pType)
     {
         bool returnValue = false;
 
-        if (Input.GetAxis("Fire1") == 1)
+        if (Input.GetAxis("Fire" + pType.ToString()) == 1)
         {
             returnValue = true;
         }
