@@ -22,4 +22,10 @@ public class Hand : MonoBehaviour {
                 break;
         }
     }
+
+    public void ThrowDice()
+    {
+
+    }
+
 }

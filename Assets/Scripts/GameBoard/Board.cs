@@ -113,6 +113,26 @@ public class Board : MonoBehaviour {
             yield return new WaitForSeconds( timeHanding );
             CreateRoll();
             yield return new WaitForSeconds( waveList[currentWave].waveTime);
+            Dice[] dices = FindObjectsOfType<Dice>();
+            IsABouncer.ROLLING = false;
+            bool allDicesAreSleeping = false;
+            while(!allDicesAreSleeping)
+            {
+                bool b = true;
+                for (int i = 0; i < dices.Length; i++)
+                {
+                    dices[i].rBody.mass = 10;
+                    if (!dices[i].rBody.IsSleeping())
+                    {
+                        b = false;
+                    }
+
+                }
+                allDicesAreSleeping = b;
+                yield return new WaitForEndOfFrame();
+
+            }
+
             DamageBoss();
             yield return new WaitForSeconds( timeDamagingBoss );
 
@@ -163,32 +183,49 @@ public class Board : MonoBehaviour {
     void CreateRoll()
     {
         GameManager.ChangeState( EnumHolder.GameState.Rolling );
+        IsABouncer.ROLLING = true;
         List<EnumHolder.DiceType> tempDiceList = waveList[currentWave].diceList;
+        PhantomMode.instance.StartPhantom(waveList[currentWave].waveTime);
         GameObject go;
+        List<Dice> dices = new List<Dice>();
         for (int i = 0; i < tempDiceList.Count; i++)
         {
             switch (tempDiceList[i])
             {
                 case EnumHolder.DiceType.D6:
                     //Criar o d6
-                    go = (Instantiate(d6Prefab, transform.position, Quaternion.identity)) as GameObject;
+                    go = (Instantiate(d6Prefab, transform.position + Vector3.up * 1000, Quaternion.identity)) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
+                    if (go != null)
+                    {
+                        dices.Add(go.GetComponent<Dice>());
+                    }
                     break;
 
                 case EnumHolder.DiceType.D8:
                     //Criar o d8
-                    Instantiate( d8Prefab, transform.position, Quaternion.identity);
+                    go =  Instantiate( d8Prefab, transform.position + Vector3.up * 1000, Quaternion.identity) as GameObject;
+                    if (go != null)
+                    {
+                        dices.Add(go.GetComponent<Dice>());
+                    }
                     break;
 
                 case EnumHolder.DiceType.D10:
-                    go = ( Instantiate( d10Prefab, transform.position, Quaternion.identity ) ) as GameObject;
+                    go = ( Instantiate( d10Prefab, transform.position + Vector3.up * 1000, Quaternion.identity ) ) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
+                    if (go != null)
+                    {
+                        dices.Add(go.GetComponent<Dice>());
+                    }
                     break;
+
+              
             }
         }
-
+        HandAsset.instance.SortDicesOnHand(dices);
          
     }
 
@@ -257,7 +294,8 @@ public class Board : MonoBehaviour {
             Vector2 WorldObject_ScreenPosition = new Vector2(
             ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
             ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
-
+            WorldObject_ScreenPosition.x += 1920 * 0.5f;
+            WorldObject_ScreenPosition.y += 1080 * 0.5f;
             //now you can set the position of the ui element
             hitFeedback.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
 

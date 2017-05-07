@@ -11,12 +11,12 @@ public class PossesRadius : MonoBehaviour {
     float _elapsedPossessionCooldown;
 
     PlayerControl pControl;
-    MeshRenderer renderer;
+    SpriteRenderer renderer;
     Vector3 input;
     // Use this for initialization
     void Start () {
         pControl = GetComponent<PlayerControl>();
-        renderer = GetComponent<MeshRenderer>();
+        renderer = GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -60,9 +60,8 @@ public class PossesRadius : MonoBehaviour {
                 }
 
                 // if the input is given, possess the son of a gun
-                if (possessable.diceState != Dice.DiceState.possessed)
+                if (possessable.diceState != Dice.DiceState.possessed && !possessable.alreadyPossesed)
                 {
-                    Debug.Log("aa");
                     if (possessable != null && _elapsedPossessionCooldown < 0)
                     {
                         possessable.diceState = Dice.DiceState.selected;
@@ -92,10 +91,9 @@ public class PossesRadius : MonoBehaviour {
     {
 
         Dice d = other.gameObject.GetComponent<Dice>();
-        Debug.Log(d);
+
         if ( d != null)
         {
-            Debug.Log("a");
             dicesOnRadius.Add(d);
         }
 

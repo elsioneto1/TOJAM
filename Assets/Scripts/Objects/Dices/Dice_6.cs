@@ -44,6 +44,7 @@ public class Dice_6 : Dice
 	// Update is called once per frame
 	public override void Update ()
     {
+        //Debug.Log(rBody.velocity);
         base.Update();
         possetionDuration -= Time.deltaTime;
         if (possetionDuration < 0 && InputParser.GetUnpossession() && POSSESSED)
@@ -128,6 +129,7 @@ public class Dice_6 : Dice
 
     public override DiceResult EvaluateResults()
     {
+        
         base.EvaluateResults();
         DiceResult dr = DiceResult.Sword;
 
@@ -173,7 +175,6 @@ public class Dice_6 : Dice
 
     public void FixedUpdate()
     {
-
         rBody.AddForce(finalForceVector);
         // reset after the force is Applied
         finalForceVector = Vector3.zero;
