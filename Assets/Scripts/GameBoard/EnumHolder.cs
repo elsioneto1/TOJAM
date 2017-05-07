@@ -31,6 +31,7 @@ public class EnumHolder : MonoBehaviour {
     {
         Starter,
         Hit,
+        Roll,
         Curse,
         Damage
     }

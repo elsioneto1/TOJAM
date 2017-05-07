@@ -82,12 +82,14 @@ public class Board : MonoBehaviour {
     void Initiate()
     {
         //Bug quando acaba o jogo
-        activeHero = currentPlayerOrder[ currentHero ];
-        SetHeroActive( true );
 
-        GameManager.ChangeState( EnumHolder.GameState.Initiating );
+        if(currentHero != 3)
+        {
+            activeHero = currentPlayerOrder[ currentHero ];
+            SetHeroActive( true );
+            GameManager.ChangeState( EnumHolder.GameState.Initiating );
+        }
 
-  
 
         StartCoroutine( "CreateHand" );
 
@@ -115,6 +117,7 @@ public class Board : MonoBehaviour {
             yield return new WaitForSeconds( timeDamagingBoss );
 
             SetHeroActive( false );
+
             Initiate();
         }
 
@@ -246,8 +249,6 @@ public class Board : MonoBehaviour {
             if(activeDices[i].EvaluateResults() == Dice.DiceResult.Sword)
             totalHits++;
 
-           
-
 
             GameObject hitFeedback = Instantiate( hitPrefab, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
 
@@ -269,7 +270,6 @@ public class Board : MonoBehaviour {
 
         }
 
-        Debug.Log( totalHits );
         return totalHits;
     }
 

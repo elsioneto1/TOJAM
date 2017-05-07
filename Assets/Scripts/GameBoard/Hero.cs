@@ -11,7 +11,8 @@ public class Hero : MonoBehaviour {
     public GameObject baloon;
     public GameObject dialogueText;
 
-    public List<string> enteringList = new List<string>();
+    public List<string> initiativeList = new List<string>();
+    public List<string> rollList = new List<string>();
     public List<string> hitList = new List<string>();
     public List<string> cursingList = new List<string>();
     public List<string> damageList = new List<string>();
@@ -45,7 +46,11 @@ public class Hero : MonoBehaviour {
         switch(dialogueType)
         {
             case EnumHolder.DialogueType.Starter:
-                currentDialogue = enteringList[ Random.Range( 0, enteringList.Count ) ];
+                currentDialogue = initiativeList[ Random.Range( 0, initiativeList.Count ) ];
+                break;
+
+            case EnumHolder.DialogueType.Roll:
+                currentDialogue = rollList[ Random.Range( 0, rollList.Count ) ];
                 break;
 
             case EnumHolder.DialogueType.Hit:
@@ -62,8 +67,6 @@ public class Hero : MonoBehaviour {
         }
 
         baloon.GetComponent<Wobbling>().Grow();
-       // baloon.GetComponent<AlphaDecaySprite>().StartAlphaDecay();
-       // dialogueText.GetComponent<AlphaDecay>().StartAlphaDecay();
         dialogueText.GetComponent<Text>().text = currentDialogue;
     }
 }
