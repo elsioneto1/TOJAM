@@ -170,19 +170,21 @@ public class Dice_6 : Dice
         }
 
         dr = results[dicKey];
-        Debug.Log(dicKey);
+
         return dr;
 
     }
 
     public void FixedUpdate()
     {
-        Debug.Log(finalForceVector);
+        if (rBody != null)
+        {
 
-        rBody.AddForce(finalForceVector);
-        // reset after the force is Applied
-        finalForceVector = Vector3.zero;
-        
+
+            rBody.AddForce(finalForceVector);
+            // reset after the force is Applied
+            finalForceVector = Vector3.zero;
+        }
     }
 
     private void OnDrawGizmos()

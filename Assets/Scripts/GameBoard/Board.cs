@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Board : MonoBehaviour {
+public class Board : MonoBehaviour
+{
 
     static Board _instance;
     public static Board instance
@@ -27,7 +28,7 @@ public class Board : MonoBehaviour {
     private EnumHolder.HeroType activeHero;
     #endregion
 
-    [Header( "Dice Prefabs" )]
+    [Header("Dice Prefabs")]
     #region Dice
     public GameObject d6Prefab;
     public GameObject d8Prefab;
@@ -38,7 +39,7 @@ public class Board : MonoBehaviour {
 
     #endregion
 
-    [Header( "Action Times" )]
+    [Header("Action Times")]
     #region actionTimes
     public float timeInitiating;
     public float timeHanding;
@@ -46,13 +47,13 @@ public class Board : MonoBehaviour {
     public float timeCombat;
     #endregion
 
-    [Header( "WaveData" )]
+    [Header("WaveData")]
     #region waves
     public List<Wave> waveList = new List<Wave>();
     private int currentWave;
     #endregion
 
-    [Header( "Round" )]
+    [Header("Round")]
     #region round
     private int currentRound;
     #endregion
@@ -63,18 +64,18 @@ public class Board : MonoBehaviour {
 
     void Start()
     {
-        currentPlayerOrder.Add( EnumHolder.HeroType.Mage);
-        currentPlayerOrder.Add( EnumHolder.HeroType.Warrior);
-        currentPlayerOrder.Add( EnumHolder.HeroType.Ranger);
+        currentPlayerOrder.Add(EnumHolder.HeroType.Mage);
+        currentPlayerOrder.Add(EnumHolder.HeroType.Warrior);
+        currentPlayerOrder.Add(EnumHolder.HeroType.Ranger);
 
         CreateRound();
     }
 
-    void CreateRound()      
+    void CreateRound()
     {
-        if(currentRound <= waveList.Count/3)
+        if (currentRound <= waveList.Count / 3)
         {
-            Shuffle( currentPlayerOrder );
+            Shuffle(currentPlayerOrder);
             Initiate();
 
         }
@@ -84,42 +85,52 @@ public class Board : MonoBehaviour {
     {
         //Bug quando acaba o jogo
 
-        if(currentHero != 3)
+        if (currentHero != 3)
         {
-            activeHero = currentPlayerOrder[ currentHero ];
-            SetHeroActive( true );
-            GameManager.ChangeState( EnumHolder.GameState.Initiating );
+            activeHero = currentPlayerOrder[currentHero];
+            SetHeroActive(true);
+            GameManager.ChangeState(EnumHolder.GameState.Initiating);
         }
 
 
-        StartCoroutine( "CreateHand" );
+        StartCoroutine("CreateHand");
 
     }
-    
+
     IEnumerator CreateHand()
     {
-       
+
         if (currentHero < 3)
         {
-            yield return new WaitForSeconds( timeInitiating );
+            yield return new WaitForSeconds(timeInitiating);
 
-            GameManager.ChangeState( EnumHolder.GameState.Handing );
+            GameManager.ChangeState(EnumHolder.GameState.Handing);
 
             //Seta a mao
-            GameObject hand = Instantiate(handPrefab,transform.position, Quaternion.identity) as GameObject;
-            hand.GetComponent<Hand>().SetHand( activeHero );
-   
+            GameObject hand = Instantiate(handPrefab, transform.position, Quaternion.identity) as GameObject;
+            hand.GetComponent<Hand>().SetHand(activeHero);
+
             currentHero++;
 
-            yield return new WaitForSeconds( timeHanding );
+            yield return new WaitForSeconds(timeHanding);
             CreateRoll();
-            yield return new WaitForSeconds( waveList[currentWave].waveTime);
+            yield return new WaitForSeconds(waveList[currentWave].waveTime);
+            
             Dice[] dices = FindObjectsOfType<Dice>();
+            for (int i = 0; i < dices.Length; i++)
+            {
+                if (!dices[i].alreadyPossesed)
+                {
+                   // dices[i].JumpGambiarra();
+             
+                }
+            }
             IsABouncer.ROLLING = false;
+          
             int maxFrames = 20;
             int frameCount = 0;
             bool allDicesAreSleeping = false;
-            while(!allDicesAreSleeping)
+            while (!allDicesAreSleeping)
             {
                 bool b = true;
                 for (int i = 0; i < dices.Length; i++)
@@ -136,14 +147,7 @@ public class Board : MonoBehaviour {
                     {
                         if (!dices[i].rBody.IsSleeping())
                         {
-                            if ( velocity.magnitude > 1 )
-                            {
-                               // dices[i].rBody.velocity *= 08f;
-                            }
-                            else
-                           // dices[i].rBody.Sleep();
-                            
-                            Debug.Log("not sleeping");
+                           
                             b = false;
                         }
                     }
@@ -153,23 +157,31 @@ public class Board : MonoBehaviour {
                         dices[i].rBody.angularVelocity = Vector3.zero;
                     }
 
-                   
-                   // Debug.Log(dices[i].rBody.velocity);
+
+                    // Debug.Log(dices[i].rBody.velocity);
                     dices[i].OnEndPossesion();
-                   
+
 
                 }
                 allDicesAreSleeping = b;
                 yield return new WaitForEndOfFrame();
                 frameCount++;
-               
+
 
             }
 
+            for (int i = 0; i < dices.Length; i++)
+            {
+                if (dices[i].alreadyPossesed)
+                { 
+                  //  dices[i].JumpGambiarra();
+                   // dices[i].rBody.mass = 1000;
+                }
+            }
             Combat();
-            yield return new WaitForSeconds( timeCombat );
+            yield return new WaitForSeconds(timeCombat);
 
-            SetHeroActive( false );
+            SetHeroActive(false);
 
             Initiate();
         }
@@ -180,28 +192,28 @@ public class Board : MonoBehaviour {
             currentRound++;
             currentHero = 0;
             CreateRound();
-        } 
+        }
     }
-   
+
     void SetHeroActive(bool isActivating)
     {
 
         //Popa o Heroi na UI
-        switch ( activeHero )
+        switch (activeHero)
         {
             case EnumHolder.HeroType.Mage:
-                GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>().SetStarter( isActivating );
-                GameManager.instance.activeHero = GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>();
+                GameManager.GetBaseObject("Mage").GetComponent<Hero>().SetStarter(isActivating);
+                GameManager.instance.activeHero = GameManager.GetBaseObject("Mage").GetComponent<Hero>();
                 break;
 
             case EnumHolder.HeroType.Warrior:
-                GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>().SetStarter( isActivating );
-                GameManager.instance.activeHero = GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>();
+                GameManager.GetBaseObject("Warrior").GetComponent<Hero>().SetStarter(isActivating);
+                GameManager.instance.activeHero = GameManager.GetBaseObject("Warrior").GetComponent<Hero>();
                 break;
 
             case EnumHolder.HeroType.Ranger:
-                GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>().SetStarter( isActivating );
-                GameManager.instance.activeHero = GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>();
+                GameManager.GetBaseObject("Ranger").GetComponent<Hero>().SetStarter(isActivating);
+                GameManager.instance.activeHero = GameManager.GetBaseObject("Ranger").GetComponent<Hero>();
                 break;
         }
 
@@ -210,7 +222,7 @@ public class Board : MonoBehaviour {
 
     void CreateRoll()
     {
-        GameManager.ChangeState( EnumHolder.GameState.Rolling );
+        GameManager.ChangeState(EnumHolder.GameState.Rolling);
         IsABouncer.ROLLING = true;
         List<EnumHolder.DiceType> tempDiceList = waveList[currentWave].diceList;
         if (PhantomMode.instance)
@@ -234,7 +246,7 @@ public class Board : MonoBehaviour {
 
                 case EnumHolder.DiceType.D8:
                     //Criar o d8
-                    go =  Instantiate( d8Prefab, transform.position + Vector3.up * 1000, Quaternion.identity) as GameObject;
+                    go = Instantiate(d8Prefab, transform.position + Vector3.up * 1000, Quaternion.identity) as GameObject;
                     if (go != null)
                     {
                         dices.Add(go.GetComponent<Dice>());
@@ -242,7 +254,7 @@ public class Board : MonoBehaviour {
                     break;
 
                 case EnumHolder.DiceType.D10:
-                    go = ( Instantiate( d10Prefab, transform.position + Vector3.up * 1000, Quaternion.identity ) ) as GameObject;
+                    go = (Instantiate(d10Prefab, transform.position + Vector3.up * 1000, Quaternion.identity)) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
                     if (go != null)
@@ -251,19 +263,19 @@ public class Board : MonoBehaviour {
                     }
                     break;
 
-              
+
             }
         }
         HandAsset.instance.SortDicesOnHand(dices);
-         
+
     }
 
     void Combat()
     {
-        GameManager.ChangeState( EnumHolder.GameState.Combat );
+        GameManager.ChangeState(EnumHolder.GameState.Combat);
         currentWave++;
 
-        if ( currentWave == waveList.Count )
+        if (currentWave == waveList.Count)
             EndGame();
     }
 
@@ -283,11 +295,11 @@ public class Board : MonoBehaviour {
     //        EndGame();
     //}
 
-    
+
     void EndGame()
     {
         StopAllCoroutines();
-        Debug.Log( "There are no more rounds" );
+        Debug.Log("There are no more rounds");
     }
 
 
@@ -321,13 +333,13 @@ public class Board : MonoBehaviour {
         // pega aqui o resultado de cada dado. Ele retorna a face 
         for (int i = 0; i < activeDices.Count; i++)
         {
-            if(activeDices[i].EvaluateResults() == Dice.DiceResult.Sword)
-            totalHits++;
+            if (activeDices[i].EvaluateResults() == Dice.DiceResult.Sword)
+                totalHits++;
 
 
-          //  GameObject hitFeedback = Instantiate( hitPrefab, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
+            //  GameObject hitFeedback = Instantiate( hitPrefab, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
 
-           //RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
+            //RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
             //Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( hitFeedback.transform.position );
             //Vector2 WorldObject_ScreenPosition = new Vector2(
             //( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
@@ -338,11 +350,11 @@ public class Board : MonoBehaviour {
             //hitFeedback.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
 
 
-           // hitFeedback.transform.SetParent(GameManager.GetBaseObject( "Canvas" ).transform);
+            // hitFeedback.transform.SetParent(GameManager.GetBaseObject( "Canvas" ).transform);
             //hitFeedback.transform.position = hitFeedback.transform.GetComponent<Canvas>().worldCamera.WorldToViewportPoint( hitFeedback.transform.position );
-          //  Vector3 newPoint = hitFeedback.transform.position;
-          
-           // hitFeedback.transform .position
+            //  Vector3 newPoint = hitFeedback.transform.position;
+
+            // hitFeedback.transform .position
 
 
         }
@@ -350,58 +362,56 @@ public class Board : MonoBehaviour {
         return totalHits;
     }
 
-    public void CallDamageEffects( bool isHeroes, Vector3 rectTransformPosition )
+    public void CallDamageEffects(bool isHeroes, Vector3 rectTransformPosition)
     {
-        for ( int i = 0; i < activeDices.Count; i++ )
+        for (int i = 0; i < activeDices.Count; i++)
         {
-            if ( activeDices[ i ].EvaluateResults() == Dice.DiceResult.Sword )
+            if (activeDices[i].EvaluateResults() == Dice.DiceResult.Sword)
             {
-                    if ( isHeroes )
-                    {
-                        GameObject feedbackIcon = Instantiate( swordFeedback, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
-                        RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
-                        Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( feedbackIcon.transform.position );
-                        Vector2 WorldObject_ScreenPosition = new Vector2(
-                        ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
-                        ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
-                        WorldObject_ScreenPosition.x += 1920 * 0.5f;
-                        WorldObject_ScreenPosition.y += 1080 * 0.5f;
-                    //now you can set the position of the ui element
-                    feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
-
-
-                    feedbackIcon.transform.SetParent( GameManager.GetBaseObject( "Canvas" ).transform );
-
-
-                    feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition( rectTransformPosition);
-                }
-         
-            }
-
-            else
-            {
-                if (!isHeroes )
+                if (isHeroes)
                 {
-                    GameObject feedbackIcon = Instantiate( skullFeedback, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
-                    RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
-                    Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( feedbackIcon.transform.position );
+                    GameObject feedbackIcon = Instantiate(swordFeedback, activeDices[i].transform.position, Quaternion.identity) as GameObject;
+                    RectTransform CanvasRect = GameManager.GetBaseObject("Canvas").GetComponent<RectTransform>();
+                    Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(feedbackIcon.transform.position);
                     Vector2 WorldObject_ScreenPosition = new Vector2(
-                    ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
-                    ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
+                    ((ViewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),
+                    ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)));
                     WorldObject_ScreenPosition.x += 1920 * 0.5f;
                     WorldObject_ScreenPosition.y += 1080 * 0.5f;
                     //now you can set the position of the ui element
                     feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
 
 
-                    feedbackIcon.transform.SetParent( GameManager.GetBaseObject( "Canvas" ).transform );
+                    feedbackIcon.transform.SetParent(GameManager.GetBaseObject("Canvas").transform);
 
-                    feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition( rectTransformPosition );
+
+                    feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition(rectTransformPosition);
+                }
+
+            }
+
+            else
+            {
+                if (!isHeroes)
+                {
+                    GameObject feedbackIcon = Instantiate(skullFeedback, activeDices[i].transform.position, Quaternion.identity) as GameObject;
+                    RectTransform CanvasRect = GameManager.GetBaseObject("Canvas").GetComponent<RectTransform>();
+                    Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(feedbackIcon.transform.position);
+                    Vector2 WorldObject_ScreenPosition = new Vector2(
+                    ((ViewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),
+                    ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)));
+                    WorldObject_ScreenPosition.x += 1920 * 0.5f;
+                    WorldObject_ScreenPosition.y += 1080 * 0.5f;
+                    //now you can set the position of the ui element
+                    feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
+
+
+                    feedbackIcon.transform.SetParent(GameManager.GetBaseObject("Canvas").transform);
+
+                    feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition(rectTransformPosition);
                 }
 
             }
         }
     }
 }
-
-

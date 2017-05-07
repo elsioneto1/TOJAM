@@ -76,7 +76,8 @@ public class PossesRadius : MonoBehaviour {
                             possessable.rBody.velocity = possessable.rBody.velocity.normalized * 2;
                             possessable.OnStartPossesion(this);
                             pControl.enabled = false;
-
+                            diceOnRandiusAndInFrontOfCharacter.Clear();
+                            dicesOnRadius.Clear();
                             anim.SetTrigger("Possessing");
                             //OnPossess();
                         }
@@ -97,14 +98,16 @@ public class PossesRadius : MonoBehaviour {
         }
 	}
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
-
+        if (pControl.enabled == false)
+            return;
         Dice d = other.gameObject.GetComponent<Dice>();
 
         if ( d != null)
         {
-            dicesOnRadius.Add(d);
+            if (!dicesOnRadius.Contains(d))
+                dicesOnRadius.Add(d);
         }
 
 
@@ -133,6 +136,7 @@ public class PossesRadius : MonoBehaviour {
 
     public void PossessionExit()
     {
+        Debug.Log(name);
         pControl.enabled = true;
         myRenderer.enabled = true;
         _elapsedPossessionCooldown = possessionCooldown; 

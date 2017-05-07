@@ -79,11 +79,11 @@ public class Dice_10 : Dice {
     {
         base.Update();
         possetionDuration -= Time.deltaTime;
-        if (possetionDuration < 0 && InputParser.GetUnpossession(whosPossessed.pControl.playerType) && POSSESSED)
+        if (whosPossessed != null && possetionDuration < 0 && InputParser.GetUnpossession(whosPossessed.pControl.playerType) && POSSESSED)
         {
             OnEndPossesion();
         }
-        if (POSSESSED && ! alreadyPossesed)
+        if (whosPossessed != null && POSSESSED && ! alreadyPossesed)
         {
             // Debug.Log(possetionDuration);
             input = new Vector3(InputParser.GetHorizontal(whosPossessed.pControl.playerType), 0, InputParser.GetVertical(whosPossessed.pControl.playerType));
@@ -147,10 +147,12 @@ public class Dice_10 : Dice {
 
     public void FixedUpdate()
     {
-      
-        rBody.AddForce(finalForceVector);
-        // reset after the force is Applied
-        finalForceVector = Vector3.zero;
+        if (rBody != null)
+        {
+            rBody.AddForce(finalForceVector);
+            // reset after the force is Applied
+            finalForceVector = Vector3.zero;
+        }
     }
 
 
