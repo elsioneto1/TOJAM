@@ -22,14 +22,14 @@ public class IsABouncer : MonoBehaviour {
         Dice d = collision.gameObject.GetComponent<Dice>();
         if (d.POSSESSED || !ROLLING)
             return;
-
+        
         if ( collision.gameObject.GetComponent<Dice>() != null)
         {
 
             
             if (board != null)
             {
-
+                Debug.Log("aa");
                 Vector3 reflection = d.rBody.velocity - 2 * Vector3.Dot(d.rBody.velocity, transform.forward) * -transform.forward;
                 d.rBody.velocity = Vector3.zero;
                 Vector3 force = reflection + (Vector3.up * 900);

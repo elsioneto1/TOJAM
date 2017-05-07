@@ -182,6 +182,7 @@ public class Board : MonoBehaviour {
         GameManager.ChangeState( EnumHolder.GameState.Rolling );
         IsABouncer.ROLLING = true;
         List<EnumHolder.DiceType> tempDiceList = waveList[currentWave].diceList;
+        PhantomMode.instance.StartPhantom(waveList[currentWave].waveTime);
         GameObject go;
         List<Dice> dices = new List<Dice>();
         for (int i = 0; i < tempDiceList.Count; i++)
@@ -190,7 +191,7 @@ public class Board : MonoBehaviour {
             {
                 case EnumHolder.DiceType.D6:
                     //Criar o d6
-                    go = (Instantiate(d6Prefab, transform.position, Quaternion.identity)) as GameObject;
+                    go = (Instantiate(d6Prefab, transform.position + Vector3.up * 1000, Quaternion.identity)) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
                     if (go != null)
@@ -201,7 +202,7 @@ public class Board : MonoBehaviour {
 
                 case EnumHolder.DiceType.D8:
                     //Criar o d8
-                    go =  Instantiate( d8Prefab, transform.position, Quaternion.identity) as GameObject;
+                    go =  Instantiate( d8Prefab, transform.position + Vector3.up * 1000, Quaternion.identity) as GameObject;
                     if (go != null)
                     {
                         dices.Add(go.GetComponent<Dice>());
@@ -209,7 +210,7 @@ public class Board : MonoBehaviour {
                     break;
 
                 case EnumHolder.DiceType.D10:
-                    go = ( Instantiate( d10Prefab, transform.position, Quaternion.identity ) ) as GameObject;
+                    go = ( Instantiate( d10Prefab, transform.position + Vector3.up * 1000, Quaternion.identity ) ) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
                     if (go != null)
@@ -292,7 +293,8 @@ public class Board : MonoBehaviour {
             Vector2 WorldObject_ScreenPosition = new Vector2(
             ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
             ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
-
+            WorldObject_ScreenPosition.x += 1920 * 0.5f;
+            WorldObject_ScreenPosition.y += 1080 * 0.5f;
             //now you can set the position of the ui element
             hitFeedback.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
 
@@ -305,7 +307,6 @@ public class Board : MonoBehaviour {
 
         }
 
-        Debug.Log( totalHits );
         return totalHits;
     }
 

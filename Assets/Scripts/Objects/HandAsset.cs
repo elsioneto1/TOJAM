@@ -36,14 +36,16 @@ public class HandAsset : MonoBehaviour {
             if (spawnPoints[i].holdingDice != null)
             {
                 int random = Random.Range(0, sortedIndexes.Count);
+
+                int index = sortedIndexes[random];
                 sortedIndexes.RemoveAt(random);
 
 
                 spawnPoints[i].holdingDice.rBody.useGravity = true;
                 spawnPoints[i].holdingDice.rBody.isKinematic = false;
 
-                spawnPoints[i].holdingDice.rBody.AddForce(forces[random]);
-                spawnPoints[i].holdingDice.rBody.AddRelativeTorque(forces[random], ForceMode.Impulse);
+                spawnPoints[i].holdingDice.rBody.AddForce(forces[index]);
+                spawnPoints[i].holdingDice.rBody.AddRelativeTorque(forces[index], ForceMode.Impulse);
                 Debug.Log(forces[random]);
                 spawnPoints[i].holdingDice = null;
             }
@@ -60,12 +62,16 @@ public class HandAsset : MonoBehaviour {
     {
         for (int i = 0; i < dices.Count; i++)
         {
+
+          
             dices[i].rBody.useGravity = false;
             dices[i].rBody.isKinematic = true;
 
             int random = Random.Range(0, sortedIndexes.Count);
+            int index  = sortedIndexes[random];
+            Debug.Log(random);
             sortedIndexes.RemoveAt(random);
-            spawnPoints[random].holdingDice =  dices[i];
+            spawnPoints[index].holdingDice =  dices[i];
 
         }
 

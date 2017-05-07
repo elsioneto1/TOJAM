@@ -11,12 +11,12 @@ public class PossesRadius : MonoBehaviour {
     float _elapsedPossessionCooldown;
 
     PlayerControl pControl;
-    MeshRenderer renderer;
+    SpriteRenderer renderer;
     Vector3 input;
     // Use this for initialization
     void Start () {
         pControl = GetComponent<PlayerControl>();
-        renderer = GetComponent<MeshRenderer>();
+        renderer = GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
