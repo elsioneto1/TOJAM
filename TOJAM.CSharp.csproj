@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\GameBoard\GameManager.cs" />
     <Compile Include="Assets\Scripts\GameBoard\Hand.cs" />
     <Compile Include="Assets\Scripts\GameBoard\Hero.cs" />
+    <Compile Include="Assets\Scripts\GameBoard\PhantomMode.cs" />
     <Compile Include="Assets\Scripts\GameBoard\TurnPaper.cs" />
     <Compile Include="Assets\Scripts\GameBoard\Wave.cs" />
     <Compile Include="Assets\Scripts\Inputs\InputParser.cs" />
@@ -99,6 +100,10 @@
     <Compile Include="Assets\Scripts\Objects\Dices\Dice_10.cs" />
     <Compile Include="Assets\Scripts\Objects\Dices\Dice_6.cs" />
     <Compile Include="Assets\Scripts\Objects\Environment\IsTheBoard.cs" />
+    <Compile Include="Assets\Scripts\Objects\HandAsset.cs" />
+    <Compile Include="Assets\Scripts\Objects\IsABouncer.cs" />
+    <Compile Include="Assets\Scripts\Objects\IsAFloor.cs" />
+    <Compile Include="Assets\Scripts\Objects\SpawnPointDice.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerControl.cs" />
     <Compile Include="Assets\Scripts\Player\PossesRadius.cs" />
     <Compile Include="Assets\Scripts\Utilities\AlphaDecay.cs" />

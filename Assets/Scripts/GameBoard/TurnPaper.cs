@@ -30,13 +30,16 @@ public class TurnPaper : MonoBehaviour {
                     paperText.text = "Rolling Dice";
                     break;
 
-                case EnumHolder.GameState.DamageBoss:
-                    paperText.text = "The Hero Attacks";
+                case EnumHolder.GameState.Combat:
+                    paperText.text = "Damage Resolution";
                     break;
+                //case EnumHolder.GameState.DamageBoss:
+                //    paperText.text = "The Hero Attacks";
+                //    break;
 
-                case EnumHolder.GameState.DamageHeroes:
-                    paperText.text = "The GOAT Attacks";
-                    break;
+                //case EnumHolder.GameState.DamageHeroes:
+                //    paperText.text = "The GOAT Attacks";
+                //    break;
 
 
                 case EnumHolder.GameState.GameOver:
