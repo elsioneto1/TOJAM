@@ -32,6 +32,7 @@ public class EnumHolder : MonoBehaviour {
         Hit,
         Roll,
         Curse,
-        Damage
+        Damage,
+        Death
     }
 }

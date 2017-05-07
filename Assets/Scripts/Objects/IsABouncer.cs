@@ -63,7 +63,7 @@ public class IsABouncer : MonoBehaviour {
             }
             else
             {
-                Debug.Log(name);
+                //Debug.Log(name);
                 Vector3 reflection = d.rBody.velocity - 2 * Vector3.Dot(d.rBody.velocity, transform.forward) * transform.forward;
                 d.rBody.velocity = Vector3.zero;
                 Vector3 force = reflection + (Vector3.up * reflectionForceWall);

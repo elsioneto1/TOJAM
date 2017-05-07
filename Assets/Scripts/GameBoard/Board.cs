@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class Board : MonoBehaviour {
 
@@ -29,9 +30,13 @@ public class Board : MonoBehaviour {
 
     [Header( "Dice Prefabs" )]
     #region Dice
-    public GameObject d6Prefab;
-    public GameObject d8Prefab;
-    public GameObject d10Prefab;
+    public List<GameObject> d6PrefabList = new List<GameObject>();
+    public List<GameObject> d8PrefabList = new List<GameObject>();
+    public List<GameObject> d10PrefabList = new List<GameObject>();
+
+    private GameObject currentd6Prefab;
+    private GameObject currentd8Prefab;
+    private GameObject currentd10Prefab;
     // public GameObject hitPrefab;
     public GameObject swordFeedback;
     public GameObject skullFeedback;
@@ -63,19 +68,45 @@ public class Board : MonoBehaviour {
 
     void Start()
     {
-        currentPlayerOrder.Add( EnumHolder.HeroType.Mage);
-        currentPlayerOrder.Add( EnumHolder.HeroType.Warrior);
-        currentPlayerOrder.Add( EnumHolder.HeroType.Ranger);
+
 
         CreateRound();
     }
 
-    void CreateRound()      
+    void CreateRound()
     {
-        if(currentRound <= waveList.Count/3)
+
+        if (currentRound <= waveList.Count/3)
         {
-            Shuffle( currentPlayerOrder );
-            Initiate();
+            currentPlayerOrder.Clear();
+
+            if(!GameManager.GetBaseObject("Mage").GetComponent<Hero>().isDead)
+                currentPlayerOrder.Add( EnumHolder.HeroType.Mage );
+
+            if ( !GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>().isDead )
+            currentPlayerOrder.Add( EnumHolder.HeroType.Warrior );
+
+            if ( !GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>().isDead )
+                currentPlayerOrder.Add( EnumHolder.HeroType.Ranger );
+
+            if ( currentPlayerOrder.Count != 0 )
+            {
+                if ( GameManager.GetBaseObject( "Boss" ).GetComponent<Boss>().health == 0 )
+                    EndGame( true );
+
+                else
+                {
+                    Shuffle( currentPlayerOrder );
+                    Initiate();
+                }
+          
+            }
+
+            else
+            {           
+               //Heroes Lost
+               EndGame( false );
+            }
 
         }
     }
@@ -84,7 +115,7 @@ public class Board : MonoBehaviour {
     {
         //Bug quando acaba o jogo
 
-        if(currentHero != 3)
+        if ( currentHero != currentPlayerOrder.Count)
         {
             activeHero = currentPlayerOrder[ currentHero ];
             SetHeroActive( true );
@@ -98,8 +129,8 @@ public class Board : MonoBehaviour {
     
     IEnumerator CreateHand()
     {
-       
-        if (currentHero < 3)
+
+        if ( currentHero < currentPlayerOrder.Count)
         {
             yield return new WaitForSeconds( timeInitiating );
 
@@ -143,7 +174,7 @@ public class Board : MonoBehaviour {
                             else
                            // dices[i].rBody.Sleep();
                             
-                            Debug.Log("not sleeping");
+                           // Debug.Log("not sleeping");
                             b = false;
                         }
                     }
@@ -171,7 +202,11 @@ public class Board : MonoBehaviour {
 
             SetHeroActive( false );
 
-            Initiate();
+            if ( GameManager.isPaused )
+                StartCoroutine( "WaitInitiate" );
+
+            else
+                Initiate();
         }
 
         else
@@ -181,6 +216,16 @@ public class Board : MonoBehaviour {
             currentHero = 0;
             CreateRound();
         } 
+    }
+
+    IEnumerator WaitInitiate()
+    {
+        while(GameManager.isPaused)
+        {
+            yield return new WaitForSeconds( 0.5f );
+        }
+
+        Initiate();
     }
    
     void SetHeroActive(bool isActivating)
@@ -192,20 +237,27 @@ public class Board : MonoBehaviour {
             case EnumHolder.HeroType.Mage:
                 GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>().SetStarter( isActivating );
                 GameManager.instance.activeHero = GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>();
+                currentd6Prefab = d6PrefabList[ 0 ];
+                currentd10Prefab = d10PrefabList[ 0 ];
                 break;
 
             case EnumHolder.HeroType.Warrior:
                 GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>().SetStarter( isActivating );
                 GameManager.instance.activeHero = GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>();
+                currentd6Prefab = d6PrefabList[ 1 ];
+                currentd10Prefab = d10PrefabList[ 1 ];
                 break;
 
             case EnumHolder.HeroType.Ranger:
                 GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>().SetStarter( isActivating );
                 GameManager.instance.activeHero = GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>();
+                currentd6Prefab = d6PrefabList[ 2 ];
+                currentd10Prefab = d10PrefabList[ 2 ];
                 break;
         }
 
     }
+
 
 
     void CreateRoll()
@@ -223,7 +275,7 @@ public class Board : MonoBehaviour {
             {
                 case EnumHolder.DiceType.D6:
                     //Criar o d6
-                    go = (Instantiate(d6Prefab, transform.position + Vector3.up * 1000, Quaternion.identity)) as GameObject;
+                    go = (Instantiate( currentd6Prefab, transform.position + Vector3.up * 1000, Quaternion.identity)) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
                     if (go != null)
@@ -234,7 +286,7 @@ public class Board : MonoBehaviour {
 
                 case EnumHolder.DiceType.D8:
                     //Criar o d8
-                    go =  Instantiate( d8Prefab, transform.position + Vector3.up * 1000, Quaternion.identity) as GameObject;
+                    go =  Instantiate( currentd8Prefab, transform.position + Vector3.up * 1000, Quaternion.identity) as GameObject;
                     if (go != null)
                     {
                         dices.Add(go.GetComponent<Dice>());
@@ -242,7 +294,7 @@ public class Board : MonoBehaviour {
                     break;
 
                 case EnumHolder.DiceType.D10:
-                    go = ( Instantiate( d10Prefab, transform.position + Vector3.up * 1000, Quaternion.identity ) ) as GameObject;
+                    go = ( Instantiate( currentd10Prefab, transform.position + Vector3.up * 1000, Quaternion.identity ) ) as GameObject;
 
                     go.transform.parent = Dice.SPAWN_BASE.transform;
                     if (go != null)
@@ -262,9 +314,6 @@ public class Board : MonoBehaviour {
     {
         GameManager.ChangeState( EnumHolder.GameState.Combat );
         currentWave++;
-
-        if ( currentWave == waveList.Count )
-            EndGame();
     }
 
     //void DamageBoss()
@@ -284,10 +333,21 @@ public class Board : MonoBehaviour {
     //}
 
     
-    void EndGame()
+    void EndGame(bool heroesWon)
     {
         StopAllCoroutines();
-        Debug.Log( "There are no more rounds" );
+
+        if (heroesWon)
+        {
+            SceneManager.LoadScene( "HeroWins" );
+        }
+
+        else
+        {
+            SceneManager.LoadScene( "GoatWins" );
+        }
+        
+        
     }
 
 

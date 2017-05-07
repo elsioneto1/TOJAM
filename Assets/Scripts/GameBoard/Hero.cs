@@ -16,6 +16,11 @@ public class Hero : MonoBehaviour {
     public List<string> hitList = new List<string>();
     public List<string> cursingList = new List<string>();
     public List<string> damageList = new List<string>();
+    public string deadDialogue;
+
+    public bool isDead;
+
+    public Sprite deadSprite;
 
     string currentDialogue;
 
@@ -41,6 +46,15 @@ public class Hero : MonoBehaviour {
         lifeText.text = health.ToString();
     }
 
+
+    public void KillHero()
+    {
+        transform.GetChild( 0 ).GetComponent<Image>().sprite = deadSprite;
+        isDead = true;
+    }
+
+
+
     public void CallDialogue(EnumHolder.DialogueType dialogueType)
     {
         switch(dialogueType)
@@ -63,6 +77,11 @@ public class Hero : MonoBehaviour {
 
             case EnumHolder.DialogueType.Damage:
                 currentDialogue = damageList[ Random.Range( 0, damageList.Count ) ];
+                break;
+
+
+            case EnumHolder.DialogueType.Death:
+                currentDialogue = deadDialogue;
                 break;
         }
 

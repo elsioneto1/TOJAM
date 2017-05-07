@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -11,11 +12,17 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
 
     public Hero activeHero;
-    
+
+    public static bool isPaused = false;
+
+
+    public GameObject tutorialPrefab;
+    bool learning = true;
 
     void Awake()
     {
         instance = this;
+
     }
 
     public static GameObject GetBaseObject(string objectName)
@@ -35,7 +42,7 @@ public class GameManager : MonoBehaviour {
     {
         currentGameState = nextState;
         Debug.Log( currentGameState );
-
+        
         instance.StartCoroutine( "Transition" );
 
         switch (nextState)
@@ -109,6 +116,7 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator HitBoss(int swordNumber)
     {
+       
         if(swordNumber > 0 )
         {
             int counter = 0;
@@ -117,6 +125,7 @@ public class GameManager : MonoBehaviour {
 
             yield return new WaitForSeconds( 2 );
 
+
             while ( counter < swordNumber )
             {
                 GetBaseObject( "Boss" ).GetComponent<Boss>().DealDamage( 1 );
@@ -124,6 +133,12 @@ public class GameManager : MonoBehaviour {
                 yield return new WaitForSeconds( 0.5f );
             }
 
+            if ( learning )
+            {
+                learning = true;
+                tutorialPrefab.SetActive( true );
+                isPaused = true;
+            }
         }
 
         yield return new WaitForSeconds( 0 );
@@ -139,9 +154,16 @@ public class GameManager : MonoBehaviour {
                 yield return new WaitForSeconds(2);
 
                 activeHero.DealDamage( 1 );
+
+            if ( activeHero.health == 0 )
+            {
+                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Death );
+                activeHero.KillHero();
+            }
+                
             
-   
-            instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
+            else
+                instance.StartCoroutine( "Dialogue", EnumHolder.DialogueType.Damage );
         }
 
         yield return new WaitForSeconds( 0 );
