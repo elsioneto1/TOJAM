@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 public class Dice_10 : Dice {
 
@@ -67,7 +67,7 @@ public class Dice_10 : Dice {
             GUIStyle style = new GUIStyle();
             style.border = new RectOffset(0, 10, 0, 10);
 
-            Handles.Label(transform.position + angleReferences[i].transform.forward * 1.8f, results[angleReferences[i]].ToString(), style);
+            //Handles.Label(transform.position + angleReferences[i].transform.forward * 1.8f, results[angleReferences[i]].ToString(), style);
 
         }
 
@@ -83,7 +83,7 @@ public class Dice_10 : Dice {
         {
             OnEndPossesion();
         }
-        if (whosPossessed != null && POSSESSED && ! alreadyPossesed)
+        if (whosPossessed != null && POSSESSED )
         {
             // Debug.Log(possetionDuration);
             input = new Vector3(InputParser.GetHorizontal(whosPossessed.pControl.playerType), 0, InputParser.GetVertical(whosPossessed.pControl.playerType));

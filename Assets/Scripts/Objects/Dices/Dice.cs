@@ -23,7 +23,7 @@ public class Dice : MonoBehaviour {
 
     protected Vector3[] vectors = new Vector3[6];
     protected Vector3[] parsedVectors;//= new Vector3[4];
-    protected float possesingTime = 0.2f;
+    protected float possesingTime = 0.5f;
     public bool POSSESSED = false;
     protected Vector3 forceRight;
     protected Vector3 forceForward;
@@ -125,7 +125,7 @@ public class Dice : MonoBehaviour {
 
     public void BlinkPossessed(PlayerControl pc)
     {
-        Debug.Log("aa");
+        //Debug.Log("aa");
         if (pc.playerType == PlayerControl.PlayerType.P1)
         {
             minColor = MinColor_Possessed_P1;
@@ -172,8 +172,8 @@ public class Dice : MonoBehaviour {
     public virtual void OnStartPossesion(PossesRadius player)
     {
         // lock the interaction if already possesed
-        if (alreadyPossesed)
-            return;
+       // if (alreadyPossesed)
+        //    return;
 
 
         player.GetComponent<GhostSprites>().HideTrail();
@@ -202,7 +202,7 @@ public class Dice : MonoBehaviour {
         if (IsABouncer.ROLLING)
         {
             JumpGambiarra();
-            rBody.mass = 15;
+            //rBody.mass = 15;
         }
         POSSESSED = false;
         //rBody.velocity = rBody.velocity * 0.5f;
@@ -211,7 +211,7 @@ public class Dice : MonoBehaviour {
      
         diceState = DiceState.normal;
         Vector3 newPlayerPosition = transform.position;
-        Debug.Log(whosPossessed);
+        //Debug.Log(whosPossessed);
         if (whosPossessed != null)
         {
             whosPossessed.GetComponent<GhostSprites>().killSwitch = false;

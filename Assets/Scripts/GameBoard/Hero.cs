@@ -24,6 +24,8 @@ public class Hero : MonoBehaviour {
 
     string currentDialogue;
 
+    public GameObject cutPrefab;
+
     public void SetStarter( bool isActive )
     {
         if ( isActive )
@@ -41,8 +43,13 @@ public class Hero : MonoBehaviour {
         else
             health = 0;
 
-        
-        iTween.PunchRotation( gameObject, new Vector3( 0,0, 15 ), 1 );
+
+        GameObject cut = Instantiate( cutPrefab, Vector3.zero, Quaternion.identity ) as GameObject;
+        cut.transform.SetParent( transform );
+        cut.transform.position = transform.GetChild( 0 ).GetComponent<RectTransform>().position;
+        cut.transform.Rotate( new Vector3( 0, 0, Random.Range( -180, 180 ) ) );
+
+        iTween.PunchRotation( gameObject, new Vector3( 0,0, 15 ), 0.45f );
         lifeText.text = health.ToString();
     }
 

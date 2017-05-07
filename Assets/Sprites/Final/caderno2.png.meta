@@ -1,13 +1,14 @@
 fileFormatVersion: 2
 guid: 05a2eeeb471af1d4ca416178048a4d68
-timeCreated: 1494103927
+timeCreated: 1494192436
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: caderno2_0
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -34,12 +35,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteBorder: {x: 0, y: 0, z: 5, w: 3}
   spritePixelsToUnits: 100
   alphaUsage: 1
   alphaIsTransparency: 0
@@ -68,8 +69,58 @@ TextureImporter:
     overridden: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
-    outline: []
+    sprites:
+    - serializedVersion: 2
+      name: caderno2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 612
+        height: 192
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline:
+    - - {x: 277, y: -73.5}
+      - {x: 275, y: -63.5}
+      - {x: 283, y: -55.5}
+      - {x: 297, y: -60.5}
+      - {x: 299, y: -60.5}
+      - {x: 301, y: -55.5}
+      - {x: 302, y: -43.5}
+      - {x: 303, y: -29.5}
+      - {x: 300, y: -28.5}
+      - {x: 280, y: -28.5}
+      - {x: 278, y: -18.5}
+      - {x: 286, y: -10.5}
+      - {x: 302, y: -17.5}
+      - {x: 304, y: -16.5}
+      - {x: 307, y: 2.5}
+      - {x: 306, y: 10.5}
+      - {x: 303, y: 11.5}
+      - {x: 284, y: 12.5}
+      - {x: 282, y: 22.5}
+      - {x: 290, y: 30.5}
+      - {x: 304, y: 23.5}
+      - {x: 307, y: 24.5}
+      - {x: 307, y: 52.5}
+      - {x: 303, y: 52.5}
+      - {x: 285, y: 54.5}
+      - {x: 281, y: 59.5}
+      - {x: 251, y: 65.5}
+      - {x: 220, y: 72.5}
+      - {x: 208, y: 71.5}
+      - {x: -144.7325, y: 52.97905}
+      - {x: -261, y: 97.5}
+      - {x: -307, y: 97.5}
+      - {x: -307, y: -97.5}
+      - {x: 297, y: -97.5}
+      - {x: 298, y: -90.5}
+      - {x: 299, y: -75.5}
+      - {x: 296, y: -74.5}
   spritePackingTag: 
   userData: 
   assetBundleName: 

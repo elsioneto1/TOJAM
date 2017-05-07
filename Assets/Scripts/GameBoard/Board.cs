@@ -91,15 +91,9 @@ public class Board : MonoBehaviour {
 
             if ( currentPlayerOrder.Count != 0 )
             {
-                if ( GameManager.GetBaseObject( "Boss" ).GetComponent<Boss>().health == 0 )
-                    EndGame( true );
 
-                else
-                {
                     Shuffle( currentPlayerOrder );
                     Initiate();
-                }
-          
             }
 
             else
@@ -113,15 +107,15 @@ public class Board : MonoBehaviour {
 
     void Initiate()
     {
-        //Bug quando acaba o jogo
+        if ( GameManager.GetBaseObject( "Boss" ).GetComponent<Boss>().health == 0 )
+            EndGame( true );
+
 
         if ( currentHero != currentPlayerOrder.Count)
         {
             activeHero = currentPlayerOrder[ currentHero ];
-            SetHeroActive( true );
             GameManager.ChangeState( EnumHolder.GameState.Initiating );
         }
-
 
         StartCoroutine( "CreateHand" );
 
@@ -132,6 +126,7 @@ public class Board : MonoBehaviour {
 
         if ( currentHero < currentPlayerOrder.Count)
         {
+            SetHeroActive( true );
             yield return new WaitForSeconds( timeInitiating );
 
             GameManager.ChangeState( EnumHolder.GameState.Handing );
@@ -202,8 +197,14 @@ public class Board : MonoBehaviour {
 
             SetHeroActive( false );
 
-            if ( GameManager.isPaused )
+            yield return new WaitForSeconds( 1f );
+
+            if (GameManager.isPaused && GameManager.instance.learning)
+            {
+                GameManager.instance.learning = false;
                 StartCoroutine( "WaitInitiate" );
+            }
+                
 
             else
                 Initiate();
@@ -220,12 +221,16 @@ public class Board : MonoBehaviour {
 
     IEnumerator WaitInitiate()
     {
+        
         while(GameManager.isPaused)
         {
+            Debug.Log( "COROUTINE" );
             yield return new WaitForSeconds( 0.5f );
         }
-
+        GameManager.instance.learning = false;
+        GameManager.isPaused = false;
         Initiate();
+        StopCoroutine( "WaitInitiate" );
     }
    
     void SetHeroActive(bool isActivating)

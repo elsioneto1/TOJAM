@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 public class Dice_6 : Dice
 {
@@ -52,7 +52,7 @@ public class Dice_6 : Dice
         {
             OnEndPossesion();
         }
-        if (whosPossessed != null && POSSESSED && !alreadyPossesed)
+        if (whosPossessed != null && POSSESSED  )
         {
            // Debug.Log(possetionDuration);
             input = new Vector3(InputParser.GetHorizontal(whosPossessed.pControl.playerType), 0, InputParser.GetVertical(whosPossessed.pControl.playerType));
@@ -195,12 +195,12 @@ public class Dice_6 : Dice
         Debug.DrawRay(transform.position, finalForceVector, Color.green);
         GUIStyle style = new GUIStyle();
         style.border = new RectOffset(0, 10, 0, 10);
-        Handles.Label(transform.position + transform.right, Face1.ToString(), style);
-        Handles.Label(transform.position - transform.right * 1.5f, Face2.ToString(), style);
-        Handles.Label(transform.position + transform.up , Face3.ToString(), style);
-        Handles.Label(transform.position - transform.up , Face4.ToString(), style);
-        Handles.Label(transform.position + transform.forward * 1.5f, Face5.ToString(), style);
-        Handles.Label(transform.position - transform.forward , Face6.ToString(), style);
+        //Handles.Label(transform.position + transform.right, Face1.ToString(), style);
+        //Handles.Label(transform.position - transform.right * 1.5f, Face2.ToString(), style);
+        //Handles.Label(transform.position + transform.up , Face3.ToString(), style);
+        //Handles.Label(transform.position - transform.up , Face4.ToString(), style);
+        //Handles.Label(transform.position + transform.forward * 1.5f, Face5.ToString(), style);
+        //Handles.Label(transform.position - transform.forward , Face6.ToString(), style);
 
 
     }

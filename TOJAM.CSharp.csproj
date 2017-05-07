@@ -84,6 +84,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GhostSprites.cs" />
     <Compile Include="Assets\Scripts\GameBoard\Board.cs" />
     <Compile Include="Assets\Scripts\GameBoard\Boss.cs" />
     <Compile Include="Assets\Scripts\GameBoard\BossHealthBar.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Assets\Scripts\Utilities\Buttons.cs" />
     <Compile Include="Assets\Scripts\Utilities\Cut.cs" />
     <Compile Include="Assets\Scripts\Utilities\DiceTravel.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Instructions.cs" />
     <Compile Include="Assets\Scripts\Utilities\MathOperations.cs" />
     <Compile Include="Assets\Scripts\Utilities\OverlayAlpha.cs" />
     <Compile Include="Assets\Scripts\Utilities\Tutorial.cs" />

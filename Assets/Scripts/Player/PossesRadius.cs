@@ -66,7 +66,7 @@ public class PossesRadius : MonoBehaviour {
                 }
 
                 // if the input is given, possess the son of a gun
-                if (possessable.diceState != Dice.DiceState.possessed && !possessable.alreadyPossesed)
+                if (possessable.diceState != Dice.DiceState.possessed )
                 {
                     if (possessable != null && _elapsedPossessionCooldown < 0)
                     {
@@ -139,8 +139,21 @@ public class PossesRadius : MonoBehaviour {
         Debug.Log(name);
         pControl.enabled = true;
         myRenderer.enabled = true;
-        _elapsedPossessionCooldown = possessionCooldown; 
+        _elapsedPossessionCooldown = possessionCooldown;
+        StartCoroutine(Gambiarra());
 
+
+    }
+
+    IEnumerator Gambiarra()
+    {
+        yield return new WaitForSeconds( 0.2f );
+
+        if (!myRenderer.enabled)
+        {
+            pControl.enabled = true;
+            myRenderer.enabled = true;
+        }
     }
 
 

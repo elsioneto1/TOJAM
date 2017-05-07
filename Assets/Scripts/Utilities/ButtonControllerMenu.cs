@@ -39,7 +39,7 @@ public class ButtonControllerMenu : MonoBehaviour {
         if ( Input.GetAxis( "Fire" + playerType.ToString()) == 1 )
         {
             if ( currentSelected == play )
-                SceneManager.LoadScene( "Level" );
+                SceneManager.LoadScene( "Instructions" );
 
             else
                 Application.Quit();

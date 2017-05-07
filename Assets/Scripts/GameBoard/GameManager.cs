@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour {
 
 
     public GameObject tutorialPrefab;
-    bool learning = true;
+    public bool learning = true;
 
     void Awake()
     {
@@ -151,9 +151,22 @@ public class GameManager : MonoBehaviour {
         {
             Board.instance.CallDamageEffects( false, activeHero.GetComponent<RectTransform>().position );
 
-                yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(2);
 
+            //for(int i = 0; i < skullnumber; i++)
+            //{
+            //    activeHero.DealDamage( 1 );
+            //}
+
+            int counter = 0;
+
+            while ( counter < skullnumber )
+            {
                 activeHero.DealDamage( 1 );
+                counter++;
+                yield return new WaitForSeconds( 0.5f );
+            }
+
 
             if ( activeHero.health == 0 )
             {
@@ -167,6 +180,15 @@ public class GameManager : MonoBehaviour {
         }
 
         yield return new WaitForSeconds( 0 );
+    }
+
+    void Update()
+    {
+        if ( Input.GetKeyDown( KeyCode.Escape ) )
+        {
+            Application.Quit();
+        }
+
     }
 
     IEnumerator Transition()
