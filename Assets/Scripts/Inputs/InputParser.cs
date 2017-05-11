@@ -33,8 +33,14 @@ public class InputParser : MonoBehaviour
     {
         bool returnValue = false;
 
-        if (Input.GetAxis("Fire" + pType.ToString()) == 1)
+        if ( pType == PlayerControl.PlayerType.P1)
         {
+            if ( Input.GetKeyDown(KeyCode.Joystick1Button0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
+            returnValue = true;
+        }
+        if (pType == PlayerControl.PlayerType.P2)
+        {
+            if (Input.GetKeyDown(KeyCode.Joystick2Button0) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
             returnValue = true;
         }
 
@@ -45,9 +51,15 @@ public class InputParser : MonoBehaviour
     {
         bool returnValue = false;
 
-        if (Input.GetAxis("Fire" + pType.ToString()) == 1)
+        if (pType == PlayerControl.PlayerType.P1)
         {
-            returnValue = true;
+            if (Input.GetKeyDown(KeyCode.Joystick1Button0) || Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Mouse0))
+                returnValue = true;
+        }
+        if (pType == PlayerControl.PlayerType.P2)
+        {
+            if (Input.GetKeyDown(KeyCode.Joystick2Button0) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+                returnValue = true;
         }
 
         return returnValue;

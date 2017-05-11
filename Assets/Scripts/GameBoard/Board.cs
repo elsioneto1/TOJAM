@@ -425,20 +425,21 @@ public class Board : MonoBehaviour {
                     {
                         GameObject feedbackIcon = Instantiate( swordFeedback, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
                         RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
-                        Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( feedbackIcon.transform.position );
+                        feedbackIcon.transform.SetParent(GameManager.GetBaseObject("Canvas").transform);
+
+                            Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( feedbackIcon.transform.position );
                         Vector2 WorldObject_ScreenPosition = new Vector2(
                         ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
                         ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
-                        WorldObject_ScreenPosition.x += 1920 * 0.5f;
-                        WorldObject_ScreenPosition.y += 1080 * 0.5f;
-                    //now you can set the position of the ui element
-                    feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
+                       // WorldObject_ScreenPosition.x += 1920 * 0.5f;
+                       // WorldObject_ScreenPosition.y += 1080 * 0.5f;
+                        //now you can set the position of the ui element
+                        feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
 
 
-                    feedbackIcon.transform.SetParent( GameManager.GetBaseObject( "Canvas" ).transform );
 
 
-                    feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition( rectTransformPosition);
+                        feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition( rectTransformPosition);
                 }
          
             }
@@ -448,18 +449,20 @@ public class Board : MonoBehaviour {
                 if (!isHeroes )
                 {
                     GameObject feedbackIcon = Instantiate( skullFeedback, activeDices[ i ].transform.position, Quaternion.identity ) as GameObject;
-                    RectTransform CanvasRect = GameManager.GetBaseObject( "Canvas" ).GetComponent<RectTransform>();
-                    Vector2 ViewportPosition = Camera.main.WorldToViewportPoint( feedbackIcon.transform.position );
+                    RectTransform CanvasRect = GameManager.GetBaseObject("Canvas").GetComponent<RectTransform>();
+
+                    feedbackIcon.transform.SetParent(GameManager.GetBaseObject("Canvas").transform);
+
+                    Vector2 ViewportPosition = Camera.main.WorldToViewportPoint(feedbackIcon.transform.position);
                     Vector2 WorldObject_ScreenPosition = new Vector2(
-                    ( ( ViewportPosition.x * CanvasRect.sizeDelta.x ) - ( CanvasRect.sizeDelta.x * 0.5f ) ),
-                    ( ( ViewportPosition.y * CanvasRect.sizeDelta.y ) - ( CanvasRect.sizeDelta.y * 0.5f ) ) );
-                    WorldObject_ScreenPosition.x += 1920 * 0.5f;
-                    WorldObject_ScreenPosition.y += 1080 * 0.5f;
+                    ((ViewportPosition.x * CanvasRect.sizeDelta.x) - (CanvasRect.sizeDelta.x * 0.5f)),
+                    ((ViewportPosition.y * CanvasRect.sizeDelta.y) - (CanvasRect.sizeDelta.y * 0.5f)));
+                    // WorldObject_ScreenPosition.x += 1920 * 0.5f;
+                    // WorldObject_ScreenPosition.y += 1080 * 0.5f;
                     //now you can set the position of the ui element
                     feedbackIcon.GetComponent<RectTransform>().anchoredPosition = WorldObject_ScreenPosition;
 
 
-                    feedbackIcon.transform.SetParent( GameManager.GetBaseObject( "Canvas" ).transform );
 
                     feedbackIcon.GetComponent<DiceTravel>().SetTargetPosition( rectTransformPosition );
                 }

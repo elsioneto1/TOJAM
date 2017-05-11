@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
     public static void ChangeState(EnumHolder.GameState nextState)
     {
         currentGameState = nextState;
-        Debug.Log( currentGameState );
+
         
         instance.StartCoroutine( "Transition" );
 

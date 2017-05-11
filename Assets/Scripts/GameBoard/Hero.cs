@@ -7,6 +7,18 @@ public class Hero : MonoBehaviour {
     public Text lifeText;
     public int maxHealth = 12;
     public int health = 4;
+    private RectTransform _canvasTrans;
+    public RectTransform canvasTransform
+    {
+        get
+        {
+            if ( _canvasTrans == null)
+            {
+                _canvasTrans = GameManager.GetBaseObject("Canvas").GetComponent<RectTransform>();
+            }
+            return _canvasTrans;
+        }
+    }
 
     public GameObject baloon;
     public GameObject dialogueText;
@@ -28,11 +40,14 @@ public class Hero : MonoBehaviour {
 
     public void SetStarter( bool isActive )
     {
+        
+     
+
         if ( isActive )
-            iTween.MoveTo( gameObject, new Vector3( transform.position.x, transform.position.y + 50 ), 1f );
+            iTween.MoveTo( gameObject, new Vector3( transform.position.x, transform.position.y + (50 * canvasTransform.localScale.x)), 1f );
 
         else
-            iTween.MoveTo( gameObject, new Vector3( transform.position.x, transform.position.y - 50 ), 1f );
+            iTween.MoveTo( gameObject, new Vector3( transform.position.x, transform.position.y - (50 * canvasTransform.localScale.x)), 1f );
     }
 
     public void DealDamage(int damage)

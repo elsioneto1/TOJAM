@@ -110,9 +110,15 @@
     <Compile Include="Assets\Scripts\Utilities\AlphaDecay.cs" />
     <Compile Include="Assets\Scripts\Utilities\AlphaDecaySprite.cs" />
     <Compile Include="Assets\Scripts\Utilities\Blinking.cs" />
+    <Compile Include="Assets\Scripts\Utilities\ButtonController.cs" />
+    <Compile Include="Assets\Scripts\Utilities\ButtonControllerMenu.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Buttons.cs" />
     <Compile Include="Assets\Scripts\Utilities\Cut.cs" />
     <Compile Include="Assets\Scripts\Utilities\DiceTravel.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Instructions.cs" />
     <Compile Include="Assets\Scripts\Utilities\MathOperations.cs" />
+    <Compile Include="Assets\Scripts\Utilities\OverlayAlpha.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Tutorial.cs" />
     <Compile Include="Assets\Scripts\Utilities\Wobbling.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +126,7 @@
     <None Include="Assets\Plugins\Pixelplacement\iTween\ReadMe!\ReadMe!.txt" />
     <None Include="Assets\ProjectSettings\ProjectVersion.txt" />
     <None Include="Assets\Scripts\Shaders\LitSample.shader" />
+    <None Include="Assets\Scripts\Shaders\UIPulser.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
