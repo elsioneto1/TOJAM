@@ -243,6 +243,7 @@ public class Board : MonoBehaviour {
                 GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>().SetStarter( isActivating );
                 GameManager.instance.activeHero = GameManager.GetBaseObject( "Mage" ).GetComponent<Hero>();
                 currentd6Prefab = d6PrefabList[ 0 ];
+                currentd8Prefab = d8PrefabList[0];
                 currentd10Prefab = d10PrefabList[ 0 ];
                 break;
 
@@ -250,6 +251,7 @@ public class Board : MonoBehaviour {
                 GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>().SetStarter( isActivating );
                 GameManager.instance.activeHero = GameManager.GetBaseObject( "Warrior" ).GetComponent<Hero>();
                 currentd6Prefab = d6PrefabList[ 1 ];
+                currentd8Prefab = d8PrefabList[1];
                 currentd10Prefab = d10PrefabList[ 1 ];
                 break;
 
@@ -257,6 +259,7 @@ public class Board : MonoBehaviour {
                 GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>().SetStarter( isActivating );
                 GameManager.instance.activeHero = GameManager.GetBaseObject( "Ranger" ).GetComponent<Hero>();
                 currentd6Prefab = d6PrefabList[ 2 ];
+                currentd8Prefab = d8PrefabList[2];
                 currentd10Prefab = d10PrefabList[ 2 ];
                 break;
         }

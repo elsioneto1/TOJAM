@@ -189,7 +189,7 @@ public class Dice : MonoBehaviour {
     public void JumpGambiarra()
     {
         // GAMBIARRA EXTREMA
-        Debug.Log("gambijump");
+
             transform.position += Vector3.up * 0.1f;
         // </GAMBIARRA EXTREMA>
     }
